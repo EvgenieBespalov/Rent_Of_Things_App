@@ -66,7 +66,7 @@ fun ScreenSignIn() {
                     fontSize = 25.sp,
                     color = greyText
                 )
-                OutlinedTextField(
+                /*OutlinedTextField( 
                     modifier = Modifier
                         .padding(bottom = 20.dp)
                         .size(300.dp, 55.dp),
@@ -116,11 +116,10 @@ fun ScreenSignIn() {
                     ),
                     shape = MaterialTheme.shapeScheme.shape30,
                     textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-                )
-
-               /* OutlinedTextFieldSign(
-                    Icons.Outlined.Lock,
-                    "Пароль")*/
+                )*/
+                //Возможно не сработает, так что пусть пока повисит в комментариях
+                OutlinedTextFieldSign(Icons.Outlined.Email, "Email")
+                OutlinedTextFieldSign(Icons.Outlined.Lock, "Пароль")
 
                 Button(
                     modifier = Modifier
