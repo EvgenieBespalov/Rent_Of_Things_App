@@ -1,113 +1,198 @@
 package com.example.rent_of_things_app.screen.theme
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultBlendMode
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
 
 @Composable
 fun ScreenSignIn() {
-    var textFieldEmail by remember { mutableStateOf("Email") }
-    var textFieldPassword by remember { mutableStateOf("Пароль") }
+    var textFieldEmail by remember { mutableStateOf("") }
+    var textFieldPassword by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Green),
+            .background(Color.White),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(380.dp)
+                .graphicsLayer {
+                    clip = true
+                    shape = AbsoluteCutCornerShape(0.dp, 0.dp, 50.dp, 50.dp)
+                }
+                .background(Color.Black)
+        ){}
 
         Box(
-            modifier = Modifier.
-            size(300.dp, 250.dp).
-            background(Color.White)
+            modifier = Modifier
+                .size(340.dp, 330.dp)
+                .graphicsLayer {
+                    clip = true
+                    shape = RoundedCornerShape(15.dp)
+                    translationY = -200f
+                }
+                .background(Color.White)
+                .border(width = 1.dp, color = grey, shape = RoundedCornerShape(15.dp))
         ){
-            Column(){
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
                 Text(
+                    modifier = Modifier
+                        .padding(vertical = 30.dp),
                     text = "Вход в профиль",
-                    fontSize=25.sp,
-                    color = Color.Black
+                    fontSize = 25.sp,
+                    color = greyText
                 )
-                TextField(
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                        .size(300.dp, 55.dp),
+                    leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
                     value = textFieldEmail,
                     onValueChange = { textFieldEmail = it },
-                    colors = TextFieldDefaults.textFieldColors(
-                        textColor = Color.White,
-                        //backgroundColor = colorAccent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
+                    placeholder = {
+                        Text(
+                            "Email",
+                            fontSize = fontTextFieldSignScreen
+                        ) },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color.Black,
+                        backgroundColor = Color.White,
+                        placeholderColor = greyText,
+                        focusedBorderColor = grey,
+                        unfocusedBorderColor = grey,
+                        disabledBorderColor = grey,
+                        errorBorderColor = grey,
+                        leadingIconColor = grey
                     ),
-                    shape = MaterialTheme.shapes.small.copy(
-                        topEnd = CornerSize(15.dp),
-                        topStart = CornerSize(15.dp),
-                        bottomEnd = CornerSize(15.dp),
-                        bottomStart = CornerSize(15.dp)
-                    ),
-                    textStyle = TextStyle(fontSize = 25.sp),
+                    shape = MaterialTheme.shapeScheme.shape30,
+                    textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
                 )
-                TextField(
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                        .size(300.dp, 55.dp),
+                    leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
                     value = textFieldPassword,
                     onValueChange = { textFieldPassword = it },
-                    colors = TextFieldDefaults.textFieldColors(
-                        textColor = Color.White,
-                        //backgroundColor = colorAccent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
+                    placeholder = {
+                        Text(
+                            "Пароль",
+                            fontSize = fontTextFieldSignScreen
+                        ) },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = Color.Black,
+                        backgroundColor = Color.White,
+                        placeholderColor = greyText,
+                        focusedBorderColor = grey,
+                        unfocusedBorderColor = grey,
+                        disabledBorderColor = grey,
+                        errorBorderColor = grey,
+                        leadingIconColor = grey
                     ),
-                    shape = MaterialTheme.shapes.small.copy(
-                        topEnd = CornerSize(15.dp),
-                        topStart = CornerSize(15.dp),
-                        bottomEnd = CornerSize(15.dp),
-                        bottomStart = CornerSize(15.dp)
-                    ),
-                    textStyle = TextStyle(fontSize = 25.sp),
+                    shape = MaterialTheme.shapeScheme.shape30,
+                    textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
                 )
+
+               /* OutlinedTextFieldSign(
+                    Icons.Outlined.Lock,
+                    "Пароль")*/
+
                 Button(
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                        .size(300.dp, 55.dp),
                     onClick = {},
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
-                    shape = MaterialTheme.shapes.small.copy(
-                        topEnd = CornerSize(15.dp),
-                        topStart = CornerSize(15.dp),
-                        bottomEnd = CornerSize(15.dp),
-                        bottomStart = CornerSize(15.dp)
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = yellowActive,
+                        contentColor = Color.White
                     ),
+                    shape = MaterialTheme.shapeScheme.shape30,
                 ){
                     Text(
                         text = "Вход",
-                        fontSize = 25.sp
+                        fontSize = fontTextFieldSignScreen
                     )
                 }
             }
         }
 
-        Row(){
+        Row(
+            modifier = Modifier
+                .graphicsLayer {
+                    translationY = -100f
+                }
+        ){
             Text(
-                text = "Нет аккаунта?",
-                fontSize = 20.sp
+                text = "Нет аккаунта? ",
+                fontSize = 20.sp,
+                color = greyText
             )
             Text("Зарегистрируйтесь",
                 fontSize = 20.sp,
-                modifier = Modifier.clickable( onClick = {  })
+                modifier = Modifier.clickable( onClick = {  }),
+                color = yellowActive
             )
         }
     }
+}
+
+@Composable
+fun OutlinedTextFieldSign(
+    icon: ImageVector,
+    placeholderText: String
+){
+    var textField by remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        modifier = Modifier
+            .padding(bottom = 20.dp)
+            .size(300.dp, 55.dp),
+        leadingIcon = { Icon(icon, contentDescription = null) },
+        value = textField,
+        onValueChange = { textField = it },
+        placeholder = {
+            Text(
+                placeholderText,
+                fontSize = fontTextFieldSignScreen
+            ) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor = Color.Black,
+            backgroundColor = Color.White,
+            placeholderColor = greyText,
+            focusedBorderColor = grey,
+            unfocusedBorderColor = grey,
+            disabledBorderColor = grey,
+            errorBorderColor = grey,
+            leadingIconColor = grey
+        ),
+        shape = MaterialTheme.shapeScheme.shape30,
+        textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+    )
 }
 
 @Preview

@@ -41,7 +41,7 @@ fun Rent_Of_Things_AppTheme(
     MaterialTheme(
         colors = colors,
         typography = Typography,
-        shapes = Shapes,
+      //  shapes = Shapes,
         content = content
     )
 }
