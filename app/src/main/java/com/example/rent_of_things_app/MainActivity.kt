@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.rent_of_things_app.ui.theme.Rent_Of_Things_AppTheme
+import com.example.rent_of_things_app.screen.theme.Rent_Of_Things_AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

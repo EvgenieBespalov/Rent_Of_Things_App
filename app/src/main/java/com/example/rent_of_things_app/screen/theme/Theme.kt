@@ -1,4 +1,4 @@
-package com.example.rent_of_things_app.ui.theme
+package com.example.rent_of_things_app.screen.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
