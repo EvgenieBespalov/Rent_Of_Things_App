@@ -33,11 +33,10 @@ fun ScreenSignUp() {
     var textFieldEmail by remember { mutableStateOf("") }
     var textFieldPassword by remember { mutableStateOf("") }
 
-    Scaffold(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
+            .background(color = Color.White)
+    ){
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -52,11 +51,11 @@ fun ScreenSignUp() {
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 40.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+            Spacer(modifier = Modifier.height(40.dp))
             Box(
                 modifier = Modifier
                     .graphicsLayer {
@@ -118,6 +117,7 @@ fun ScreenSignUp() {
                     color = yellowActive
                 )
             }
+
         }
     }
 }
