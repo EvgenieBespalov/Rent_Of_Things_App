@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.*
@@ -27,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rent_of_things_app.screen.theme.*
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScreenSignUp() {
     var textFieldEmail by remember { mutableStateOf("") }
@@ -78,8 +78,8 @@ fun ScreenSignUp() {
                         color = greyText
                     )
                     //Возможно не сработает, так что пусть пока повисит в комментариях
-                    OutlinedTextFieldSign(Icons.Outlined.Email, "Имя")
-                    OutlinedTextFieldSign(Icons.Outlined.Email, "Фамилия")
+                    OutlinedTextFieldSign(Icons.Outlined.AccountCircle, "Имя")
+                    OutlinedTextFieldSign(Icons.Outlined.AccountCircle, "Фамилия")
                     OutlinedTextFieldSign(Icons.Outlined.Email, "Email")
                     OutlinedTextFieldSign(Icons.Outlined.Lock, "Пароль")
                     OutlinedTextFieldSign(Icons.Outlined.Lock, "Повторите пароль")
