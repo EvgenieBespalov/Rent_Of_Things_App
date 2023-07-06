@@ -44,7 +44,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                     )
                 },
                 enabled = true,
-                alwaysShowLabel = false
+                //alwaysShowLabel = false
             )
         }
     }
