@@ -1,14 +1,15 @@
 package com.example.rent_of_things_app.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,9 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,6 +42,123 @@ import androidx.compose.ui.unit.sp
 import com.example.rent_of_things_app.screen.theme.*
 import kotlin.math.roundToInt
 
+
+@Composable
+fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
+    val toolbarHeight = 60.dp
+    var textField by remember { mutableStateOf("") }
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Black)
+                .padding(5.dp),
+            contentAlignment = Alignment.Center
+        ){
+            OutlinedTextField(
+                modifier = Modifier
+                    .height(toolbarHeight)
+                    .fillMaxWidth()
+                    .graphicsLayer {
+                        clip = true
+                        shape = RoundedCornerShape(shape10)
+                    },
+                leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null) },
+                trailingIcon = {
+                    IconButton(onClick = { Log.d("Click", "IconExample")}) {
+                        Icon(Icons.Outlined.Menu, contentDescription = null)
+                    }
+                               },
+                value = textField,
+                onValueChange = { textField = it },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Color.Black,
+                    backgroundColor = Color.White,
+                    placeholderColor = greyText,
+                    focusedBorderColor = Color.Black,
+                    unfocusedBorderColor = Color.Black,
+                    disabledBorderColor = Color.Black,
+                    errorBorderColor = Color.Black,
+                    leadingIconColor = grey,
+                    trailingIconColor = yellowActive
+                ),
+                shape = MaterialTheme.shapeScheme.shape10,
+                textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+            )
+        }
+
+        Box(content = content)
+    }
+}
+
+@Preview
+@Composable
+fun ScreenListOfRentalOffersPreview(){
+    ScreenListOfRentalOffersTwo(){
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2)
+        ) {
+            items(100) { index ->
+                ItemOfList(
+                    nameThings = "Name $index",
+                    price = "Price $index"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemOfList(nameThings: String, price: String){
+    Box(
+        modifier = Modifier
+            .background(Color.White)
+            .padding(5.dp)
+            .graphicsLayer {
+                clip = true
+                shape = RoundedCornerShape(shape10)
+            }
+            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10)),
+        contentAlignment = Alignment.Center,
+    ){
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(
+                modifier = Modifier
+                    .size(175.dp)
+                    .graphicsLayer {
+                        clip = true
+                        shape = RoundedCornerShape(shape10)
+                    },
+                painter = ColorPainter(Color.White),
+                contentDescription = "Красный прямоугольник"
+            )
+            Text(
+                text = nameThings,
+                modifier = Modifier
+                    .padding(5.dp)
+            )
+            Text(
+                text = price
+            )
+        }
+    }
+}
+
+/*
 
 @Composable
 fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
@@ -63,17 +184,20 @@ fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
         Modifier
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
-            .background(color = Color.White)
+            .background(color = Color.White),
+        contentAlignment = Alignment.TopCenter
     ) {
         Box(content = content)
-        
+
         OutlinedTextField(
             modifier = Modifier
                 .height(toolbarHeight)
+                .fillMaxWidth()
                 .offset { IntOffset(x = 0, y = toolbarOffsetHeightPx.value.roundToInt()) }
+                .padding(5.dp)
                 .graphicsLayer {
                     clip = true
-                    shape = RoundedCornerShape(shape30)
+                    shape = RoundedCornerShape(shape10)
                 },
             value = textField,
             onValueChange = { textField = it },
@@ -81,13 +205,13 @@ fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
                 textColor = Color.Black,
                 backgroundColor = Color.White,
                 placeholderColor = greyText,
-                focusedBorderColor = grey,
-                unfocusedBorderColor = grey,
+                focusedBorderColor = yellowActive,
+                unfocusedBorderColor = yellowInactive,
                 disabledBorderColor = grey,
                 errorBorderColor = grey,
                 leadingIconColor = grey
             ),
-            shape = MaterialTheme.shapeScheme.shape30,
+            shape = MaterialTheme.shapeScheme.shape10,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
         )
 
@@ -104,7 +228,6 @@ fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
         ){
             Text("Hello World", fontSize = 28.sp)
         }*/
-
     }
 }
 
@@ -133,23 +256,22 @@ fun ScreenListOfRentalOffersPreview(){
         }*/
 }
 
-@Preview
-@Composable
-fun ItemOfListPreview(){
-    ItemOfList(nameThings = "Things1", price = "282")
-}
-
 @Composable
 fun ItemOfList(nameThings: String, price: String){
     Box(
         modifier = Modifier
-            .background(Color.Yellow)
-            .padding(5.dp),
-        contentAlignment = Alignment.Center
+            .background(Color.White)
+            .padding(5.dp)
+            .graphicsLayer {
+                clip = true
+                shape = RoundedCornerShape(shape10)
+            }
+            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10)),
+        contentAlignment = Alignment.Center,
     ){
         Column(
             modifier = Modifier
-                .background(Color.Blue)
+                .background(Color.White)
                 .fillMaxSize()
                 .padding(10.dp),
             verticalArrangement = Arrangement.Top,
@@ -157,7 +279,11 @@ fun ItemOfList(nameThings: String, price: String){
         ){
             Image(
                 modifier = Modifier
-                    .size(175.dp),
+                    .size(175.dp)
+                    .graphicsLayer {
+                        clip = true
+                        shape = RoundedCornerShape(shape10)
+                    },
                 painter = ColorPainter(Color.Red),
                 contentDescription = "Красный прямоугольник"
             )
@@ -171,4 +297,4 @@ fun ItemOfList(nameThings: String, price: String){
             )
         }
     }
-}
+}*/
