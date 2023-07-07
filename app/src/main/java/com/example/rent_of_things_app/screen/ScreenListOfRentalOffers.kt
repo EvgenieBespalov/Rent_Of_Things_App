@@ -2,11 +2,13 @@ package com.example.rent_of_things_app.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -25,6 +28,7 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +45,7 @@ fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
     val toolbarHeight = 60.dp
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
     val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
+    var textField by remember { mutableStateOf("") }
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -58,11 +63,10 @@ fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
         Modifier
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
+            .background(color = Color.White)
     ) {
         Box(content = content)
-
-        var textField by remember { mutableStateOf("") }
-
+        
         OutlinedTextField(
             modifier = Modifier
                 .height(toolbarHeight)
@@ -107,24 +111,64 @@ fun ScreenListOfRentalOffersTwo(content: @Composable BoxScope.() -> Unit){
 @Preview
 @Composable
 fun ScreenListOfRentalOffersPreview(){
-    val toolbarHeight = 48.dp
-
-   /* ScreenListOfRentalOffersTwo(){
+    ScreenListOfRentalOffersTwo(){
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 128.dp)
+            columns = GridCells.Fixed(2)
         ) {
-            items(photos) { photo ->
-                PhotoItem(photo)
+            items(100) { index ->
+                ItemOfList(
+                    nameThings = "Name $index",
+                    price = "Price $index"
+                )
             }
         }
-    }*/
+    }
 
-        LazyColumn(contentPadding = PaddingValues(top = toolbarHeight)) {
+    /*LazyColumn(contentPadding = PaddingValues(top = toolbarHeight)) {
             items(100) { index ->
                 Text("I'm item $index", modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp))
             }
-        }
+        }*/
 }
 
+@Preview
+@Composable
+fun ItemOfListPreview(){
+    ItemOfList(nameThings = "Things1", price = "282")
+}
+
+@Composable
+fun ItemOfList(nameThings: String, price: String){
+    Box(
+        modifier = Modifier
+            .background(Color.Yellow)
+            .padding(5.dp),
+        contentAlignment = Alignment.Center
+    ){
+        Column(
+            modifier = Modifier
+                .background(Color.Blue)
+                .fillMaxSize()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(
+                modifier = Modifier
+                    .size(175.dp),
+                painter = ColorPainter(Color.Red),
+                contentDescription = "Красный прямоугольник"
+            )
+            Text(
+                text = nameThings,
+                modifier = Modifier
+                    .padding(5.dp)
+            )
+            Text(
+                text = price
+            )
+        }
+    }
+}
