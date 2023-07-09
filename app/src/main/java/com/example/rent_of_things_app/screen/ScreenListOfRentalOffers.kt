@@ -41,7 +41,7 @@ val toolbarHeight = //500.dp
 sizeIconExpand + fullSizePullOutPanel + sizeIconExpandButton + paddingTabBar*4 + sizeSearchLine
 
 var userScrollEnabled =  mutableStateOf(true)
-
+val sizePullOutPanel = mutableStateOf(0.dp)
 
 @Composable
 fun ScreenListOfRentalOffers(){
@@ -81,7 +81,6 @@ fun ScreenListOfRentalOffers(){
 
 @Composable
 fun TabBar(){
-    val sizePullOutPanel = remember { mutableStateOf(0.dp) }
     val pullOutPanelExtended = remember { mutableStateOf(false) }
 
     Box(
@@ -95,11 +94,7 @@ fun TabBar(){
                 .padding(paddingTabBar)
         ){
             SearchBarThings()
-            Box(modifier = Modifier
-                .height(sizePullOutPanel.value)//.background(Color.Yellow)
-            ){
-                //Text("gggggggg")
-            }
+            PullOutPanel()
             IconButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -136,6 +131,22 @@ fun TabBar(){
             }
         }
     }
+}
+
+@Composable
+fun PullOutPanel(){
+    Box(modifier = Modifier
+        //.height(sizePullOutPanel.value)//.background(Color.Yellow)
+        .height(50.dp)//.background(Color.Yellow)
+    ){
+        //Text("gggggggg")
+    }
+}
+
+@Preview
+@Composable
+fun PullOutPanelPreview(){
+    PullOutPanel()
 }
 
 @Composable
