@@ -13,12 +13,12 @@ object ListOfBottomMenuItems {
         BottomMenuItem(
             label = "Поиск вещей",
             icon = Icons.Outlined.Search,
-            route = "search"
+            route = "list_rental_offers"
         ),
         BottomMenuItem(
             label = "Мои вещи",
             icon = Icons.Outlined.ShoppingCart,
-            route = "search"
+            route = "list_rental_offers"
         ),
         BottomMenuItem(
             label = "Профиль",

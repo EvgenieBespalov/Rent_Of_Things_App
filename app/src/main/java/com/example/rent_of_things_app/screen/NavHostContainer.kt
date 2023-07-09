@@ -17,12 +17,12 @@ fun NavHostContainer(
 
     NavHost(
         navController = navController,
-        startDestination = "search",
+        startDestination = "list_rental_offers",
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
 
-            composable("search") {
-                ScreenSignIn()
+            composable("list_rental_offers") {
+               // ScreenListOfRentalOffers()
             }
 
             composable("profile") {
