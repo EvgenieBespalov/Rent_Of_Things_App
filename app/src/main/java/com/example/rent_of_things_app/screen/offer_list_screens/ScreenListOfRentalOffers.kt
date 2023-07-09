@@ -27,21 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.rent_of_things_app.R
+import com.example.rent_of_things_app.screen.offer_list_screens.*
 import com.example.rent_of_things_app.screen.theme.*
 import kotlin.math.roundToInt
 
-val sizeIconExpand = 20.dp
-val sizeSearchLine = 60.dp
-val fullSizePullOutPanel = 60.dp
-val sizeIconExpandButton = 30.dp
-val paddingTabBar = 5.dp
-
-
-val toolbarHeight = //500.dp
-sizeIconExpand + fullSizePullOutPanel + sizeIconExpandButton + paddingTabBar*4 + sizeSearchLine
-
-var userScrollEnabled =  mutableStateOf(true)
-val sizePullOutPanel = mutableStateOf(0.dp)
 
 @Composable
 fun ScreenListOfRentalOffers(){
@@ -143,12 +132,6 @@ fun PullOutPanel(){
     }
 }
 
-@Preview
-@Composable
-fun PullOutPanelPreview(){
-    PullOutPanel()
-}
-
 @Composable
 fun SearchBarThings(){
     var textField by remember { mutableStateOf("") }
@@ -185,62 +168,10 @@ fun SearchBarThings(){
     )
 }
 
+@Preview
 @Composable
-fun ListOfItems(){
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        userScrollEnabled = userScrollEnabled.value
-    ) {
-        items(100) { index ->
-            ItemOfList(
-                nameThings = "Name $index",
-                price = "Price $index"
-            )
-        }
-    }
-}
-
-@Composable
-fun ItemOfList(nameThings: String, price: String){
-    Box(
-        modifier = Modifier
-            .background(Color.White)
-            .padding(5.dp)
-            .graphicsLayer {
-                clip = true
-                shape = RoundedCornerShape(shape10)
-            }
-            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10)),
-        contentAlignment = Alignment.Center,
-    ){
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxSize()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Image(
-                modifier = Modifier
-                    .size(175.dp)
-                    .graphicsLayer {
-                        clip = true
-                        shape = RoundedCornerShape(shape10)
-                    },
-                painter = ColorPainter(Color.White),
-                contentDescription = "Красный прямоугольник"
-            )
-            Text(
-                text = nameThings,
-                modifier = Modifier
-                    .padding(5.dp)
-            )
-            Text(
-                text = price
-            )
-        }
-    }
+fun PullOutPanelPreview(){
+    PullOutPanel()
 }
 
 @Preview
