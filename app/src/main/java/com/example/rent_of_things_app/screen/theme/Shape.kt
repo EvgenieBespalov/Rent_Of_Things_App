@@ -8,6 +8,10 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.dp
 
+val shape10 = 10.dp
+val shape30 = 30.dp
+val shape60 = 60.dp
+
 data class Shape(
     val shape10: RoundedCornerShape = RoundedCornerShape(10.dp),
     val shape30: RoundedCornerShape = RoundedCornerShape(30.dp),
