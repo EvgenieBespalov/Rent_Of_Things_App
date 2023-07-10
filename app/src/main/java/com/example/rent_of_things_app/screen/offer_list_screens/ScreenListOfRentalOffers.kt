@@ -36,7 +36,6 @@ import kotlin.math.roundToInt
 fun ScreenListOfRentalOffers(){
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
     val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-    var textField by remember { mutableStateOf("") }
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -82,7 +81,7 @@ fun TabBar(){
             modifier = Modifier
                 .padding(paddingTabBar)
         ){
-            SearchBarThings()
+            //SearchBarThings()
             PullOutPanel()
             IconButton(
                 modifier = Modifier
@@ -125,11 +124,28 @@ fun TabBar(){
 @Composable
 fun PullOutPanel(){
     Box(modifier = Modifier
-        //.height(sizePullOutPanel.value)//.background(Color.Yellow)
-        .height(50.dp)//.background(Color.Yellow)
+        .height(sizePullOutPanel.value)//.background(Color.Yellow)
     ){
         //Text("gggggggg")
     }
+}
+
+@Preview
+@Composable
+fun PullOutPanelPreview(){
+    PullOutPanel()
+}
+
+@Preview
+@Composable
+fun ScreenListOfRentalOffersPreview(){
+    ScreenListOfRentalOffers()
+}
+
+@Preview
+@Composable
+fun TabBarPreview(){
+    TabBar()
 }
 
 @Composable
@@ -166,22 +182,4 @@ fun SearchBarThings(){
         shape = MaterialTheme.shapeScheme.shape10,
         textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
     )
-}
-
-@Preview
-@Composable
-fun PullOutPanelPreview(){
-    PullOutPanel()
-}
-
-@Preview
-@Composable
-fun ScreenListOfRentalOffersPreview(){
-    ScreenListOfRentalOffers()
-}
-
-@Preview
-@Composable
-fun TabBarPreview(){
-    TabBar()
 }

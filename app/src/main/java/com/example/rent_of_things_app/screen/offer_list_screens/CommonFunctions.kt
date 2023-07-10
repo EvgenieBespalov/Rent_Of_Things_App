@@ -25,8 +25,7 @@ val fullSizePullOutPanel = 60.dp
 val sizeIconExpandButton = 30.dp
 val paddingTabBar = 5.dp
 
-val toolbarHeight = //500.dp
-    sizeIconExpand + fullSizePullOutPanel + sizeIconExpandButton + paddingTabBar*4 + sizeSearchLine
+val toolbarHeight = 100.dp
 
 var userScrollEnabled =  mutableStateOf(true)
 val sizePullOutPanel = mutableStateOf(0.dp)
