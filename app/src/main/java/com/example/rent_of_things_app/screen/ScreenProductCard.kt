@@ -1,11 +1,8 @@
 package com.example.rent_of_things_app.screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -17,6 +14,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.screen.theme.backgroundGray
+import com.example.rent_of_things_app.screen.theme.grey
 import com.example.rent_of_things_app.screen.theme.shape10
 import com.example.rent_of_things_app.screen.theme.yellowActive
 
@@ -33,80 +33,111 @@ fun ScreenProductCard(){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Blue),
+            .background(color = Color.White),
         contentAlignment = Alignment.BottomCenter,
     ){
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(color = Color.Black),
+                .background(color = backgroundGray),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 5.dp)
-                    .background(color = Color.Red)
+                    .background(color = Color.White)
                     .fillMaxWidth()
             ) {
                 Image(
                     modifier = Modifier
                         .size(400.dp)
-                        .padding(5.dp),
+                        .padding(10.dp)
+                        .graphicsLayer {
+                            clip = true
+                            shape = RoundedCornerShape(shape10)
+                        }
+                        .border(1.dp, color = grey, shape = RoundedCornerShape(shape10)),
                     painter = ColorPainter(Color.White),
-                    contentDescription = "Красный прямоугольник"
+                    contentDescription = "Фото товара"
                 )
             }
 
             Column(
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 5.dp)
-                    .background(color = Color.Red)
+                    .background(color = Color.White)
                     .fillMaxWidth()
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(5.dp),
+                        .padding(5.dp, 5.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
                     text = nameProduct
                 )
                 Text(
                     modifier = Modifier
-                        .padding(5.dp),
-                    text = priceProduct
+                        .padding(5.dp, 0.dp, 5.dp, 5.dp),
+                    fontSize = 25.sp,
+                    text = "$priceProduct рублей"
                 )
                 Text(
                     modifier = Modifier
-                        .padding(5.dp),
+                        .padding(5.dp, 0.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
                     text = addressProduct
                 )
             }
 
             Column(
                 modifier = Modifier
-                    .background(color = Color.Yellow)
+                    .background(color = Color.White)
                     .fillMaxWidth()
+                    .padding(0.dp, 0.dp, 0.dp, 5.dp),
             ){
-                Text(text = "Информация о товаре")
-                Text(text = descriptionProduct)
-                Text(text = dateProduct)
-                Text(text = statusProduct)
+                Text(
+                    modifier = Modifier
+                        .padding(5.dp, 5.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
+                    text = "Информация о товаре"
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(5.dp, 0.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
+                    text = descriptionProduct
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(5.dp, 0.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
+                    text = dateProduct
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(5.dp, 0.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
+                    text = statusProduct
+                )
             }
         }
 
         Box(
             modifier = Modifier
-                .background(color = Color.Cyan)
+                .background(color = Color.Transparent)
+                .padding(5.dp, 5.dp, 5.dp, 5.dp)
         ){
             Button(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp, 0.dp, 5.dp, 0.dp),
+                    .fillMaxWidth(),
                 onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive)
+                colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive),
+                shape = RoundedCornerShape(shape10)
             ) {
                 Text(
                     text = "Арендовать",
-                    color = Color.White
+                    color = Color.White,
+                    fontSize = 20.sp
                 )
             }
         }
