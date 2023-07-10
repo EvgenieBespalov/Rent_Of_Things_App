@@ -7,7 +7,7 @@ val yellowInactive = Color(0xFFF9B401)
 val greyText = Color(0xFFC4C4C4)
 val black = Color(0xFF000000)
 val grey = Color(0xFFC4C4C4)
-
+val backgroundGray = Color(0xFFF8F8F8)
 
 
 val Purple200 = Color(0xFFBB86FC)
