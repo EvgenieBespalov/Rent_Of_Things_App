@@ -25,7 +25,7 @@ fun NavHostContainer(
             }
 
             composable("profile") {
-                ScreenSignUp()
+                SignUpScreen()
             }
         })
 
