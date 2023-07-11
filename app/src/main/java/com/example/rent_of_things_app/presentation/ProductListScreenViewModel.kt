@@ -17,7 +17,7 @@ class ProductListScreenViewModel(): ViewModel(){
         }
     }
 
-    fun getListProduct(){
+    fun getProductList(){
         viewModelScope.launch {
             _state.value = ProductListScreenUiState.Loading
 
