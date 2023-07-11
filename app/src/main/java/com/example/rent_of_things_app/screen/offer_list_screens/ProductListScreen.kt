@@ -1,42 +1,39 @@
 package com.example.rent_of_things_app.screen
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.rent_of_things_app.R
+import com.example.rent_of_things_app.presentation.ProductListScreenUiState
+import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.screen.offer_list_screens.*
 import com.example.rent_of_things_app.screen.theme.*
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
 
 @Composable
-fun ScreenListOfRentalOffers(){
+fun ProductListScreen(
+    viewModel: ProductListScreenViewModel = koinViewModel()
+){
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
     val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -49,6 +46,9 @@ fun ScreenListOfRentalOffers(){
         }
     }
 
+    val state by viewModel.state.observeAsState(ProductListScreenUiState.Content("ii"))
+    //viewModel.getListProduct()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -56,19 +56,41 @@ fun ScreenListOfRentalOffers(){
             .background(color = Color.White),
         contentAlignment = Alignment.TopCenter
     ) {
-        ListOfItems()
+
+        when(state){
+            ProductListScreenUiState.Initial    -> viewModel.getProductList()
+            ProductListScreenUiState.Loading    -> ScreenLoadind()
+            is ProductListScreenUiState.Content -> ProductListListOfProducts()
+            is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
+        }
+
         Box(
             modifier = Modifier
                 .height(toolbarHeight)
                 .offset { IntOffset(x = 0, y = toolbarOffsetHeightPx.value.roundToInt()) },
         ){
-            TabBar()
+            ProductListTabBar()
         }
     }
 }
 
 @Composable
-fun TabBar(){
+fun ProductListListOfProducts(){
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        userScrollEnabled = userScrollEnabled.value
+    ) {
+        items(100) { index ->
+            ItemOfList(
+                nameThings = "Name $index",
+                price = "Price $index"
+            )
+        }
+    }
+}
+
+@Composable
+fun ProductListTabBar(){
     val pullOutPanelExtended = remember { mutableStateOf(false) }
 
     Box(
@@ -78,16 +100,14 @@ fun TabBar(){
         contentAlignment = Alignment.Center
     ){
         Column(
-            modifier = Modifier
-                .padding(paddingTabBar)
+            modifier = Modifier.padding(paddingTabBar)
         ){
             //SearchBarThings()
-            PullOutPanel()
+            ProductListFilterPanel()
             IconButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(sizeIconExpandButton)//.background(Color.Red)
-                ,
+                    .height(sizeIconExpandButton),
                 onClick = {
                     when(pullOutPanelExtended.value){
                         false -> {
@@ -110,9 +130,7 @@ fun TabBar(){
                             false -> R.drawable.icon_expand_more
                         }
                     ),
-                    modifier = Modifier
-                        .height(sizeIconExpand)//.background(Color.Blue)
-                    ,
+                    modifier = Modifier.height(sizeIconExpand),
                     contentDescription = null,
                     tint = yellowActive
                 )
@@ -122,9 +140,9 @@ fun TabBar(){
 }
 
 @Composable
-fun PullOutPanel(){
+fun ProductListFilterPanel(){
     Box(modifier = Modifier
-        .height(sizePullOutPanel.value)//.background(Color.Yellow)
+        .height(sizePullOutPanel.value)
     ){
         //Text("gggggggg")
     }
@@ -133,53 +151,18 @@ fun PullOutPanel(){
 @Preview
 @Composable
 fun PullOutPanelPreview(){
-    PullOutPanel()
+    ProductListFilterPanel()
 }
 
 @Preview
 @Composable
 fun ScreenListOfRentalOffersPreview(){
-    ScreenListOfRentalOffers()
+    ProductListScreen()
 }
 
 @Preview
 @Composable
 fun TabBarPreview(){
-    TabBar()
+    ProductListTabBar()
 }
 
-@Composable
-fun SearchBarThings(){
-    var textField by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(sizeSearchLine)
-            .graphicsLayer {
-                clip = true
-                shape = RoundedCornerShape(shape10)
-            },
-        leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null) },
-        trailingIcon = {
-            IconButton(onClick = { Log.d("Click", "IconExample")}) {
-                Icon(Icons.Outlined.Menu, contentDescription = null)
-            }
-        },
-        value = textField,
-        onValueChange = { textField = it },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.Black,
-            backgroundColor = Color.White,
-            placeholderColor = greyText,
-            focusedBorderColor = Color.Black,
-            unfocusedBorderColor = Color.Black,
-            disabledBorderColor = Color.Black,
-            errorBorderColor = Color.Black,
-            leadingIconColor = grey,
-            trailingIconColor = yellowActive
-        ),
-        shape = MaterialTheme.shapeScheme.shape10,
-        textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-    )
-}

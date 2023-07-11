@@ -1,7 +1,5 @@
 package com.example.rent_of_things_app.screen
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,24 +12,35 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.presentation.SignInScreenUiState
+import com.example.rent_of_things_app.presentation.SignInScreenViewModel
+import com.example.rent_of_things_app.presentation.SignUpScreenUiState
+import com.example.rent_of_things_app.presentation.SignUpScreenViewModel
 import com.example.rent_of_things_app.screen.theme.*
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ScreenSignUp() {
+fun SignUpScreen(
+    viewModel: SignUpScreenViewModel = koinViewModel()
+)  {
     var textFieldEmail by remember { mutableStateOf("") }
     var textFieldPassword by remember { mutableStateOf("") }
+
+    val state by viewModel.state.observeAsState(SignUpScreenUiState.Content("ii"))
+    when(state){
+        SignUpScreenUiState.Initial    -> Unit
+        SignUpScreenUiState.Loading    -> ScreenLoadind()
+        is SignUpScreenUiState.Content -> Unit
+        is SignUpScreenUiState.Error   -> ScreenError(errorText = (state as SignUpScreenUiState.Error).message.orEmpty())
+    }
 
     Box(
         modifier = Modifier
@@ -125,5 +134,5 @@ fun ScreenSignUp() {
 @Preview
 @Composable
 fun ScreenSignUpPreview(){
-    ScreenSignUp()
+    SignUpScreen()
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,13 +15,26 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.presentation.ProductCreationScreenUiState
+import com.example.rent_of_things_app.presentation.ProductCreationScreenViewModel
+import com.example.rent_of_things_app.presentation.ProductListScreenUiState
+import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.screen.theme.*
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ScreenProductCreation(){
-    val nameProduct = "Name product"
-    val priceProduct = "Price product"
-    val descriptionProduct = "Description product"
+fun ProductCreationScreen(
+    viewModel: ProductCreationScreenViewModel = koinViewModel()
+){
+
+    val state by viewModel.state.observeAsState(ProductCreationScreenUiState.Content("ii"))
+    when(state){
+        ProductCreationScreenUiState.Initial    -> Unit
+        ProductCreationScreenUiState.Loading    -> ScreenLoadind()
+        is ProductCreationScreenUiState.Content -> Unit
+        is ProductCreationScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
+    }
+
 
     Box(
         modifier = Modifier
@@ -89,29 +103,6 @@ fun ProductCreationAddImageButton(){
 }
 
 @Composable
-fun ProductCreationImage(){
-    Column(
-        modifier = Modifier
-            .padding(0.dp, 0.dp, 0.dp, 5.dp)
-            .background(color = Color.White)
-            .fillMaxWidth()
-    ) {
-        Image(
-            modifier = Modifier
-                .size(400.dp)
-                .padding(10.dp)
-                .graphicsLayer {
-                    clip = true
-                    shape = RoundedCornerShape(shape10)
-                }
-                .border(1.dp, color = grey, shape = RoundedCornerShape(shape10)),
-            painter = ColorPainter(Color.White),
-            contentDescription = "Фото товара"
-        )
-    }
-}
-
-@Composable
 fun ProductCreationMainInfo(){
     Column(
         modifier = Modifier
@@ -158,5 +149,28 @@ fun ProductCreationInfoTextField(placeholderText: String){
 @Preview
 @Composable
 fun ScreenProductCreationPreview(){
-    ScreenProductCreation()
+    ProductCreationScreen()
+}
+
+@Composable
+fun ProductCreationImage(){
+    Column(
+        modifier = Modifier
+            .padding(0.dp, 0.dp, 0.dp, 5.dp)
+            .background(color = Color.White)
+            .fillMaxWidth()
+    ) {
+        Image(
+            modifier = Modifier
+                .size(400.dp)
+                .padding(10.dp)
+                .graphicsLayer {
+                    clip = true
+                    shape = RoundedCornerShape(shape10)
+                }
+                .border(1.dp, color = grey, shape = RoundedCornerShape(shape10)),
+            painter = ColorPainter(Color.White),
+            contentDescription = "Фото товара"
+        )
+    }
 }

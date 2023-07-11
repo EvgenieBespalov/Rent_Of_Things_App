@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.rent_of_things_app.screen.theme.ScreenSignIn
 
 @Composable
 fun NavHostContainer(
@@ -26,7 +25,7 @@ fun NavHostContainer(
             }
 
             composable("profile") {
-                ScreenSignUp()
+                SignUpScreen()
             }
         })
 
