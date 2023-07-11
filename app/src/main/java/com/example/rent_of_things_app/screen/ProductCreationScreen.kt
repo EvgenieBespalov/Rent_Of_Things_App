@@ -31,7 +31,7 @@ fun ProductCreationScreen(
     when(state){
         ProductCreationScreenUiState.Initial    -> Unit
         ProductCreationScreenUiState.Loading    -> ScreenLoadind()
-        is ProductCreationScreenUiState.Content -> ProductListListOfProducts()
+        is ProductCreationScreenUiState.Content -> Unit
         is ProductCreationScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
     }
 
