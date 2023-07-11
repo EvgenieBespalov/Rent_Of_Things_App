@@ -7,6 +7,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,10 +17,30 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.presentation.ProductCardScreenUiState
+import com.example.rent_of_things_app.presentation.ProductCardScreenViewModel
+import com.example.rent_of_things_app.presentation.ProfileScreenUiState
+import com.example.rent_of_things_app.presentation.ProfileScreenViewModel
 import com.example.rent_of_things_app.screen.theme.*
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen(
+    viewModel: ProfileScreenViewModel = koinViewModel()
+){
+    val state by viewModel.state.observeAsState(ProfileScreenUiState.Content("ii"))
+
+    when(state){
+        ProfileScreenUiState.Initial    -> viewModel.getProfileInfo()
+        ProfileScreenUiState.Loading    -> ScreenLoadind()
+        is ProfileScreenUiState.Content -> ProfileScreenMain()
+        is ProfileScreenUiState.Error   -> ScreenError(errorText = (state as ProfileScreenUiState.Error).message.orEmpty())
+    }
+
+}
+
+@Composable
+fun ProfileScreenMain(){
     Box(
         modifier = Modifier
             .fillMaxSize()
