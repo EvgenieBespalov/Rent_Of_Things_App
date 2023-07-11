@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,11 +17,23 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.presentation.ProductListScreenUiState
+import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
+import com.example.rent_of_things_app.presentation.RentalOffersListScreenUiState
+import com.example.rent_of_things_app.presentation.RentalOffersListScreenViewModel
+import com.example.rent_of_things_app.screen.ProductListListOfProducts
+import com.example.rent_of_things_app.screen.ScreenError
+import com.example.rent_of_things_app.screen.ScreenLoadind
 import com.example.rent_of_things_app.screen.theme.shape10
 import com.example.rent_of_things_app.screen.theme.yellowActive
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun RentalOffersListScreen(){
+fun RentalOffersListScreen(
+    viewModel: RentalOffersListScreenViewModel = koinViewModel()
+){
+    val state by viewModel.state.observeAsState(RentalOffersListScreenUiState.Content("ii"))
+
     Box(
         Modifier
             .fillMaxSize()
@@ -29,7 +42,12 @@ fun RentalOffersListScreen(){
     ) {
         Column(){
             RentalOffersListButtonAddOffer()
-            RentalOffersListListOffers()
+            when(state){
+                RentalOffersListScreenUiState.Initial    -> viewModel.getRentalOffersList()
+                RentalOffersListScreenUiState.Loading    -> ScreenLoadind()
+                is RentalOffersListScreenUiState.Content -> RentalOffersListListOffers()
+                is RentalOffersListScreenUiState.Error   -> ScreenError(errorText = (state as RentalOffersListScreenUiState.Error).message.orEmpty())
+            }
         }
     }
 }
