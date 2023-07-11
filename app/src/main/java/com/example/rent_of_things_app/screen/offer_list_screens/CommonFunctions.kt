@@ -77,21 +77,6 @@ fun ItemOfList(nameThings: String, price: String){
 }
 
 @Composable
-fun ListOfItems(){
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        userScrollEnabled = userScrollEnabled.value
-    ) {
-        items(100) { index ->
-            ItemOfList(
-                nameThings = "Name $index",
-                price = "Price $index"
-            )
-        }
-    }
-}
-
-@Composable
 fun SearchBarThings(){
     var textField by remember { mutableStateOf("") }
 
