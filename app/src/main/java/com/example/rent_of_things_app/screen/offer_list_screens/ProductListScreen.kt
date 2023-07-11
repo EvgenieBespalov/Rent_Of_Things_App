@@ -1,30 +1,22 @@
 package com.example.rent_of_things_app.screen
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.rent_of_things_app.R
@@ -77,7 +69,7 @@ fun ProductListScreen(
                 .height(toolbarHeight)
                 .offset { IntOffset(x = 0, y = toolbarOffsetHeightPx.value.roundToInt()) },
         ){
-            TabBar()
+            ProductListTabBar()
         }
     }
 }
@@ -98,7 +90,7 @@ fun ProductListListOfProducts(){
 }
 
 @Composable
-fun TabBar(){
+fun ProductListTabBar(){
     val pullOutPanelExtended = remember { mutableStateOf(false) }
 
     Box(
@@ -111,7 +103,7 @@ fun TabBar(){
             modifier = Modifier.padding(paddingTabBar)
         ){
             //SearchBarThings()
-            PullOutPanel()
+            ProductListFilterPanel()
             IconButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,7 +140,7 @@ fun TabBar(){
 }
 
 @Composable
-fun PullOutPanel(){
+fun ProductListFilterPanel(){
     Box(modifier = Modifier
         .height(sizePullOutPanel.value)
     ){
@@ -159,7 +151,7 @@ fun PullOutPanel(){
 @Preview
 @Composable
 fun PullOutPanelPreview(){
-    PullOutPanel()
+    ProductListFilterPanel()
 }
 
 @Preview
@@ -171,6 +163,6 @@ fun ScreenListOfRentalOffersPreview(){
 @Preview
 @Composable
 fun TabBarPreview(){
-    TabBar()
+    ProductListTabBar()
 }
 
