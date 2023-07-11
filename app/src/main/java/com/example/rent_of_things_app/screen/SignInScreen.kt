@@ -1,6 +1,5 @@
 package com.example.rent_of_things_app.screen.theme
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,23 +10,40 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.presentation.ProductListScreenUiState
+import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
+import com.example.rent_of_things_app.presentation.SignInScreenUiState
+import com.example.rent_of_things_app.presentation.SignInScreenViewModel
+import com.example.rent_of_things_app.screen.ProductListListOfProducts
+import com.example.rent_of_things_app.screen.ScreenError
+import com.example.rent_of_things_app.screen.ScreenLoadind
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ScreenSignIn() {
+fun SignInScreen(
+    viewModel: SignInScreenViewModel = koinViewModel()
+) {
     var textFieldEmail by remember { mutableStateOf("") }
     var textFieldPassword by remember { mutableStateOf("") }
+
+    val state by viewModel.state.observeAsState(SignInScreenUiState.Content("ii"))
+    when(state){
+        SignInScreenUiState.Initial    -> Unit
+        SignInScreenUiState.Loading    -> ScreenLoadind()
+        is SignInScreenUiState.Content -> Unit
+        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+    }
 
     Box(
         modifier = Modifier
@@ -211,5 +227,5 @@ fun OutlinedTextFieldSign(
 @Preview
 @Composable
 fun ScreenSignInPreview(){
-    ScreenSignIn()
+    SignInScreen()
 }
