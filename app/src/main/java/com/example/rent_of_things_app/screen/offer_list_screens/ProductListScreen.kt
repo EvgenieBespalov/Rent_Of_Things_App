@@ -65,7 +65,7 @@ fun ProductListScreen(
     ) {
 
         when(state){
-            ProductListScreenUiState.Initial    -> viewModel.getProductList()
+            ProductListScreenUiState.Initial    -> viewModel.getAllProduct()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
             is ProductListScreenUiState.Content -> ProductListListOfProducts(navController = navController)
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())

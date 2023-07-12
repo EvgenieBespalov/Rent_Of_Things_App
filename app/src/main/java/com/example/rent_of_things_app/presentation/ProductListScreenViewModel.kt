@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rent_of_things_app.domain.usecase.GetAllProductUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
-class ProductListScreenViewModel(): ViewModel(){
+class ProductListScreenViewModel(
+    private val getAllProductUseCase: GetAllProductUseCase
+): ViewModel(){
     private val _state: MutableLiveData<ProductListScreenUiState> = MutableLiveData(ProductListScreenUiState.Initial)
     val state: LiveData<ProductListScreenUiState> = _state
 
@@ -17,12 +20,13 @@ class ProductListScreenViewModel(): ViewModel(){
         }
     }
 
-    fun getProductList(){
+    fun getAllProduct(){
         viewModelScope.launch {
             _state.value = ProductListScreenUiState.Loading
 
             try {
-                _state.value = ProductListScreenUiState.Content("it")
+                val allProduct = getAllProductUseCase()
+                _state.value = ProductListScreenUiState.Content(allProduct)
             } catch (rethrow: CancellationException) {
                 throw rethrow
             } catch (ex: Exception) {
