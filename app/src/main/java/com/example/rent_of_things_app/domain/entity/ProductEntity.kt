@@ -11,7 +11,7 @@ data class ProductEntity(
     var productDescription: String,
     var address: String,
     var creationDate: String,
-    var photo: Image,
+    var photo: String,
     var price: String,
     var status: String
 )
