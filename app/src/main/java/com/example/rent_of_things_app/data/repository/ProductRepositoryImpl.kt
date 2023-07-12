@@ -11,4 +11,7 @@ class ProductRepositoryImpl(
 ): ProductRepository {
     override suspend fun getAllProduct(): List<ProductEntity> =
         productApi.getAllProduct().map { productConverter.convertProductModelInEntity(it) }
+
+    override suspend fun getIdProduct(productId: String): ProductEntity =
+        productConverter.convertProductModelInEntity(productApi.getIdProduct(productId))
 }

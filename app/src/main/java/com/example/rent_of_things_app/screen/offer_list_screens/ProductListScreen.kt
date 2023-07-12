@@ -56,7 +56,6 @@ fun ProductListScreen(
     }
 
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
-    //viewModel.getListProduct()
 
     Box(
         Modifier
@@ -130,7 +129,7 @@ fun ProductListItemOfList(
                                     },
                 shape = RoundedCornerShape(shape10))
             .clickable {
-                navController.navigate(Routes.ProductCardScreenRoute.route)
+                navController.navigate(Routes.ProductCardScreenRoute.route + "/${productItem.productId}")
             },
         contentAlignment = Alignment.Center,
     ){

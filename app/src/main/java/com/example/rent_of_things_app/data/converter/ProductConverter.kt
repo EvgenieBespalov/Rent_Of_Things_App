@@ -4,8 +4,8 @@ import com.example.rent_of_things_app.data.model.ProductModel
 import com.example.rent_of_things_app.domain.entity.ProductEntity
 
 class ProductConverter {
-    val productFreeConst = "free"
-    val productForRent = "rent"
+    private val productFreeConst = "free"
+    private val productForRent = "rent"
 
     fun convertProductModelInEntity(from: ProductModel): ProductEntity =
         ProductEntity(

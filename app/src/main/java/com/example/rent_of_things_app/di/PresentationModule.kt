@@ -20,7 +20,9 @@ fun providePresentationModule(): Module =
             ProductCreationScreenViewModel()
         }
         viewModel {
-            ProductCardScreenViewModel()
+            ProductCardScreenViewModel(
+                getIdProductUseCase = get()
+            )
         }
         viewModel {
             SignInScreenViewModel()

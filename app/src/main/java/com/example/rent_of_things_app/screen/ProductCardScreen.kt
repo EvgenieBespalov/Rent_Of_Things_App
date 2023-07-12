@@ -17,21 +17,21 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.ProductCardScreenUiState
 import com.example.rent_of_things_app.presentation.ProductCardScreenViewModel
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
-import com.example.rent_of_things_app.screen.theme.backgroundGray
-import com.example.rent_of_things_app.screen.theme.grey
-import com.example.rent_of_things_app.screen.theme.shape10
-import com.example.rent_of_things_app.screen.theme.yellowActive
+import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProductCardScreen(
-    viewModel: ProductCardScreenViewModel = koinViewModel()
+    viewModel: ProductCardScreenViewModel = koinViewModel(),
+    productId: String?
 ){
-    val state by viewModel.state.observeAsState(ProductCardScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(ProductCardScreenUiState.Initial)
 
     Column(
         modifier = Modifier
@@ -39,21 +39,31 @@ fun ProductCardScreen(
             .background(color = Color.White)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
-        //contentAlignment = Alignment.BottomCenter,
     ){
         when(state){
-            ProductCardScreenUiState.Initial    -> viewModel.getProductInfo()
+            ProductCardScreenUiState.Initial    -> productId?.let { viewModel.getProduct(it) }
             ProductCardScreenUiState.Loading    -> ScreenLoadind()
-            is ProductCardScreenUiState.Content -> ProductCardMainInfo()
+            is ProductCardScreenUiState.Content -> {
+                ProductCardMainScreen(product = (state as ProductCardScreenUiState.Content).product)
+            }
             is ProductCardScreenUiState.Error   -> ScreenError(errorText = (state as ProductCardScreenUiState.Error).message.orEmpty())
         }
-
-        ProductCardRentButton()
     }
 }
 
 @Composable
-fun ProductCardRentButton(){
+fun ProductCardMainScreen(
+    product: ProductEntity
+){
+    ProductCardMainInfo(product)
+    ProductCardRentButton(product)
+}
+
+
+@Composable
+fun ProductCardRentButton(
+    product: ProductEntity
+){
     Box(
         modifier = Modifier
             .background(color = Color.Transparent)
@@ -62,12 +72,16 @@ fun ProductCardRentButton(){
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
+            enabled = product.productAvailable,
             onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive),
             shape = RoundedCornerShape(shape10)
         ) {
             Text(
-                text = "Арендовать",
+                text = when(product.productForRent){
+                    true -> "Взять в аренду"
+                    else -> "Предложить в аренду"
+                                                   },
                 color = Color.White,
                 fontSize = 20.sp
             )
@@ -76,14 +90,11 @@ fun ProductCardRentButton(){
 }
 
 @Composable
-fun ProductCardMainInfo(){
-    val nameProduct = "Name product"
-    val priceProduct = "Price product"
-    val addressProduct = "Address product"
-
-    val descriptionProduct = "Description product"
-    val dateProduct = "Date product"
-    val statusProduct = "Status product"
+fun ProductCardMainInfo(
+    product: ProductEntity
+){
+    val image =
+        rememberAsyncImagePainter(product.photo)
 
     Column(
         modifier = Modifier
@@ -106,7 +117,7 @@ fun ProductCardMainInfo(){
                         shape = RoundedCornerShape(shape10)
                     }
                     .border(1.dp, color = grey, shape = RoundedCornerShape(shape10)),
-                painter = ColorPainter(Color.White),
+                painter = image,
                 contentDescription = "Фото товара"
             )
         }
@@ -121,20 +132,31 @@ fun ProductCardMainInfo(){
                 modifier = Modifier
                     .padding(5.dp, 5.dp, 5.dp, 5.dp),
                 fontSize = 20.sp,
-                text = nameProduct
+                text = product.productName
             )
             Text(
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 5.dp, 5.dp),
                 fontSize = 25.sp,
-                text = "$priceProduct рублей"
+                text = "${product.price} рублей"
             )
             Text(
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 5.dp, 5.dp),
                 fontSize = 20.sp,
-                text = addressProduct
+                text = product.address
             )
+            if (!product.productForRent){
+                Text(
+                    modifier = Modifier
+                        .padding(5.dp, 0.dp, 5.dp, 5.dp),
+                    fontSize = 20.sp,
+                    text = when(product.productAvailable){
+                        true -> "Товар сейчас свободен"
+                        else -> "Товар сейчас в аренде"
+                    }
+                )
+            }
         }
 
         Column(
@@ -145,27 +167,29 @@ fun ProductCardMainInfo(){
         ){
             Text(
                 modifier = Modifier
-                    .padding(5.dp, 5.dp, 5.dp, 5.dp),
+                    .padding(5.dp, 0.dp, 0.dp, 0.dp),
                 fontSize = 20.sp,
-                text = "Информация о товаре"
+                color = greyText,
+                text = "Описание товара"
             )
             Text(
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 5.dp, 5.dp),
                 fontSize = 20.sp,
-                text = descriptionProduct
+                text = product.productDescription
+            )
+            Text(
+                modifier = Modifier
+                    .padding(5.dp, 0.dp, 0.dp, 0.dp),
+                fontSize = 20.sp,
+                color = greyText,
+                text = "Дата создания объявления"
             )
             Text(
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 5.dp, 5.dp),
                 fontSize = 20.sp,
-                text = dateProduct
-            )
-            Text(
-                modifier = Modifier
-                    .padding(5.dp, 0.dp, 5.dp, 5.dp),
-                fontSize = 20.sp,
-                text = statusProduct
+                text = product.creationDate
             )
         }
     }
@@ -174,5 +198,5 @@ fun ProductCardMainInfo(){
 @Preview
 @Composable
 fun ScreenProductCardPreview(){
-    ProductCardScreen()
+   // ProductCardScreen()
 }
