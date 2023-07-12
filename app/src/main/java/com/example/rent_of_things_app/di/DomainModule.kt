@@ -5,6 +5,7 @@ import com.example.rent_of_things_app.data.converter.ProductConverter
 import com.example.rent_of_things_app.data.repository.ProductRepositoryImpl
 import com.example.rent_of_things_app.domain.repository.ProductRepository
 import com.example.rent_of_things_app.domain.usecase.GetAllProductUseCase
+import com.example.rent_of_things_app.domain.usecase.GetIdProductUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -23,4 +24,5 @@ fun provideDomainModule(): Module =
         }
 
         factory { GetAllProductUseCase(repository = get()) }
+        factory { GetIdProductUseCase(repository = get()) }
     }
