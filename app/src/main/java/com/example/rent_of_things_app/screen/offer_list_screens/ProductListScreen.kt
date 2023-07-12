@@ -4,6 +4,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -11,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -19,9 +22,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.R
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
+import com.example.rent_of_things_app.screen.navigation.Routes
 import com.example.rent_of_things_app.screen.offer_list_screens.*
 import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
@@ -30,7 +36,8 @@ import kotlin.math.roundToInt
 
 @Composable
 fun ProductListScreen(
-    viewModel: ProductListScreenViewModel = koinViewModel()
+    viewModel: ProductListScreenViewModel = koinViewModel(),
+    navController: NavHostController
 ){
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
     val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
@@ -60,7 +67,7 @@ fun ProductListScreen(
         when(state){
             ProductListScreenUiState.Initial    -> viewModel.getProductList()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
-            is ProductListScreenUiState.Content -> ProductListListOfProducts()
+            is ProductListScreenUiState.Content -> ProductListListOfProducts(navController = navController)
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
         }
 
@@ -75,15 +82,67 @@ fun ProductListScreen(
 }
 
 @Composable
-fun ProductListListOfProducts(){
+fun ProductListListOfProducts(navController: NavHostController){
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
     ) {
         items(100) { index ->
-            ItemOfList(
+            ProductListItemOfList(
+                navController = navController,
                 nameThings = "Name $index",
                 price = "Price $index"
+            )
+        }
+    }
+}
+
+@Composable
+fun ProductListItemOfList(
+    navController: NavHostController,
+    nameThings: String,
+    price: String
+){
+
+    Box(
+        modifier = Modifier
+            .background(Color.White)
+            .padding(5.dp)
+            .graphicsLayer {
+                clip = true
+                shape = RoundedCornerShape(shape10)
+            }
+            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10))
+            .clickable {
+                navController.navigate(Routes.ProductCardScreenRoute.route)
+            },
+        contentAlignment = Alignment.Center,
+    ){
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(
+                modifier = Modifier
+                    .size(175.dp)
+                    .graphicsLayer {
+                        clip = true
+                        shape = RoundedCornerShape(shape10)
+                    },
+                painter = ColorPainter(Color.White),
+                contentDescription = "Красный прямоугольник"
+            )
+            Text(
+                text = nameThings,
+                modifier = Modifier
+                    .padding(5.dp)
+            )
+            Text(
+                text = price
             )
         }
     }
@@ -157,7 +216,8 @@ fun PullOutPanelPreview(){
 @Preview
 @Composable
 fun ScreenListOfRentalOffersPreview(){
-    ProductListScreen()
+    val navController = rememberNavController()
+    ProductListScreen(navController = navController)
 }
 
 @Preview

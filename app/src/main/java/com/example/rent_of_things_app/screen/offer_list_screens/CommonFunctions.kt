@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.rent_of_things_app.screen.theme.*
 
 val sizeIconExpand = 20.dp
@@ -33,48 +34,7 @@ val toolbarHeight = 100.dp
 var userScrollEnabled =  mutableStateOf(true)
 val sizePullOutPanel = mutableStateOf(0.dp)
 
-@Composable
-fun ItemOfList(nameThings: String, price: String){
-    Box(
-        modifier = Modifier
-            .background(Color.White)
-            .padding(5.dp)
-            .graphicsLayer {
-                clip = true
-                shape = RoundedCornerShape(shape10)
-            }
-            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10)),
-        contentAlignment = Alignment.Center,
-    ){
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxSize()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Image(
-                modifier = Modifier
-                    .size(175.dp)
-                    .graphicsLayer {
-                        clip = true
-                        shape = RoundedCornerShape(shape10)
-                    },
-                painter = ColorPainter(Color.White),
-                contentDescription = "Красный прямоугольник"
-            )
-            Text(
-                text = nameThings,
-                modifier = Modifier
-                    .padding(5.dp)
-            )
-            Text(
-                text = price
-            )
-        }
-    }
-}
+
 
 @Composable
 fun SearchBarThings(){
