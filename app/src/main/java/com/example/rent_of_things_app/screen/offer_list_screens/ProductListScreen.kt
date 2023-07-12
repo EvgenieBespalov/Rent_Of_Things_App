@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.R
+import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.screen.navigation.Routes
@@ -53,7 +54,7 @@ fun ProductListScreen(
         }
     }
 
-    val state by viewModel.state.observeAsState(ProductListScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
     //viewModel.getListProduct()
 
     Box(
@@ -67,7 +68,10 @@ fun ProductListScreen(
         when(state){
             ProductListScreenUiState.Initial    -> viewModel.getAllProduct()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
-            is ProductListScreenUiState.Content -> ProductListListOfProducts(navController = navController)
+            is ProductListScreenUiState.Content -> ProductListListOfProducts(
+                productList = (state as ProductListScreenUiState.Content).productList,
+                navController = navController
+            )
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
         }
 
@@ -82,17 +86,22 @@ fun ProductListScreen(
 }
 
 @Composable
-fun ProductListListOfProducts(navController: NavHostController){
+fun ProductListListOfProducts(
+    productList: List<ProductEntity>,
+    navController: NavHostController
+){
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
     ) {
-        items(100) { index ->
-            ProductListItemOfList(
-                navController = navController,
-                nameThings = "Name $index",
-                price = "Price $index"
-            )
+        productList.forEach {
+            item{
+                ProductListItemOfList(
+                    navController = navController,
+                    nameThings = it.productName,
+                    price = it.price
+                )
+            }
         }
     }
 }

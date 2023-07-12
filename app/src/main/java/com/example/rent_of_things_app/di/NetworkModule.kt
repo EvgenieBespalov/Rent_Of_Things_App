@@ -1,5 +1,6 @@
 package com.example.rent_of_things_app.di
 
+import com.example.rent_of_things_app.data.api.ProductApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -34,8 +35,8 @@ private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit =
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
-/*private fun provideDogApi(retrofit: Retrofit): DogApi =
-    retrofit.create()*/
+private fun provideProductApi(retrofit: Retrofit): ProductApi =
+    retrofit.create()
 
 
 fun provideNetworkModule(): Module =
@@ -43,5 +44,5 @@ fun provideNetworkModule(): Module =
         single { provideOkHttpClient() }
         single { provideGson() }
         single { provideRetrofit(okHttpClient = get(), gson = get()) }
-        //single { provideDogApi(retrofit = get()) }
+        single { provideProductApi(retrofit = get()) }
     }
