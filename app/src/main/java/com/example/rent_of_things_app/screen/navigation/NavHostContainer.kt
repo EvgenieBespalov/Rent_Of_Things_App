@@ -27,7 +27,7 @@ fun NavHostContainer(
             }
 
             composable(Routes.RentalOffersListScreenRoute.route) {
-                RentalOffersListScreen()
+                RentalOffersListScreen(navController = navController)
             }
 
             composable(Routes.ProfileScreenRoute.route) {
@@ -36,6 +36,10 @@ fun NavHostContainer(
 
             composable(Routes.ProductCardScreenRoute.route) {
                 ProductCardScreen()
+            }
+
+            composable(Routes.ProductCreationScreenRoute.route) {
+                ProductCreationScreen()
             }
         })
 

@@ -51,8 +51,9 @@ fun ProductCreationScreen(
             ProductCreationAddImageButton()
             //ProductCreationImage()
             ProductCreationMainInfo()
+            ProductCreationSaveButton()
         }
-        ProductCreationSaveButton()
+
     }
 }
 
