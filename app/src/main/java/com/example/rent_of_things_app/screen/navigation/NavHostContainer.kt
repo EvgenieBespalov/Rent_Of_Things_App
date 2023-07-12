@@ -34,8 +34,8 @@ fun NavHostContainer(
                 ProfileScreen()
             }
 
-            composable(Routes.ProductCardScreenRoute.route) {
-                ProductCardScreen()
+            composable(Routes.ProductCardScreenRoute.route + "/{productId}") {
+                ProductCardScreen(productId = it.arguments?.getString("productId"))
             }
 
             composable(Routes.ProductCreationScreenRoute.route) {

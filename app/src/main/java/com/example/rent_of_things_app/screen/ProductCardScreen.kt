@@ -29,7 +29,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProductCardScreen(
-    viewModel: ProductCardScreenViewModel = koinViewModel()
+    viewModel: ProductCardScreenViewModel = koinViewModel(),
+    productId: String?
 ){
     val state by viewModel.state.observeAsState(ProductCardScreenUiState.Content("ii"))
 
@@ -174,5 +175,5 @@ fun ProductCardMainInfo(){
 @Preview
 @Composable
 fun ScreenProductCardPreview(){
-    ProductCardScreen()
+   // ProductCardScreen()
 }
