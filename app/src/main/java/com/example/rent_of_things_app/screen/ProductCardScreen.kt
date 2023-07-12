@@ -43,18 +43,27 @@ fun ProductCardScreen(
         when(state){
             ProductCardScreenUiState.Initial    -> productId?.let { viewModel.getProduct(it) }
             ProductCardScreenUiState.Loading    -> ScreenLoadind()
-            is ProductCardScreenUiState.Content -> ProductCardMainInfo(
-                product = (state as ProductCardScreenUiState.Content).product
-            )
+            is ProductCardScreenUiState.Content -> {
+                ProductCardMainScreen(product = (state as ProductCardScreenUiState.Content).product)
+            }
             is ProductCardScreenUiState.Error   -> ScreenError(errorText = (state as ProductCardScreenUiState.Error).message.orEmpty())
         }
-
-        ProductCardRentButton()
     }
 }
 
 @Composable
-fun ProductCardRentButton(){
+fun ProductCardMainScreen(
+    product: ProductEntity
+){
+    ProductCardMainInfo(product)
+    ProductCardRentButton(product)
+}
+
+
+@Composable
+fun ProductCardRentButton(
+    product: ProductEntity
+){
     Box(
         modifier = Modifier
             .background(color = Color.Transparent)
@@ -63,12 +72,16 @@ fun ProductCardRentButton(){
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
+            enabled = product.productAvailable,
             onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive),
             shape = RoundedCornerShape(shape10)
         ) {
             Text(
-                text = "Арендовать",
+                text = when(product.productForRent){
+                    true -> "Взять в аренду"
+                    else -> "Предложить в аренду"
+                                                   },
                 color = Color.White,
                 fontSize = 20.sp
             )
