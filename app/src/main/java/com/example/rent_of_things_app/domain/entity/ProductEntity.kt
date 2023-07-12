@@ -4,7 +4,7 @@ import android.media.Image
 
 data class ProductEntity(
     var productId: String,
-    var userId: String,
+    var userId: String?,
     var adType: String,
     var productName: String,
     var productType: String,

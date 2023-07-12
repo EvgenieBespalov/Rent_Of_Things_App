@@ -6,7 +6,7 @@ data class ProductModel(
     @SerializedName("id")
     var productId: String,
     @SerializedName("user_id")
-    var userId: String,
+    var userId: String?,
     @SerializedName("ad_type")
     var adType: String,
     @SerializedName("product_name")
