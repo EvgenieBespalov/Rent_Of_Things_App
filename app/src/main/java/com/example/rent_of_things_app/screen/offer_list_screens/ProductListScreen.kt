@@ -130,7 +130,7 @@ fun ProductListItemOfList(
                                     },
                 shape = RoundedCornerShape(shape10))
             .clickable {
-                navController.navigate(Routes.ProductCardScreenRoute.route)
+                navController.navigate(Routes.ProductCardScreenRoute.route + "/${productItem.productId}")
             },
         contentAlignment = Alignment.Center,
     ){
