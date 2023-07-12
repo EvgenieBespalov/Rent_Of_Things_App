@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.rent_of_things_app.R
 import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
@@ -98,8 +99,7 @@ fun ProductListListOfProducts(
             item{
                 ProductListItemOfList(
                     navController = navController,
-                    nameThings = it.productName,
-                    price = it.price
+                    productItem = it
                 )
             }
         }
@@ -109,9 +109,10 @@ fun ProductListListOfProducts(
 @Composable
 fun ProductListItemOfList(
     navController: NavHostController,
-    nameThings: String,
-    price: String
+    productItem: ProductEntity
 ){
+    val image =
+        rememberAsyncImagePainter(productItem.photo)
 
     Box(
         modifier = Modifier
@@ -121,7 +122,13 @@ fun ProductListItemOfList(
                 clip = true
                 shape = RoundedCornerShape(shape10)
             }
-            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10))
+            .border(
+                width = 2.dp,
+                color = when(productItem.productAvailable){
+                    true -> yellowActive
+                    false -> grey
+                                    },
+                shape = RoundedCornerShape(shape10))
             .clickable {
                 navController.navigate(Routes.ProductCardScreenRoute.route)
             },
@@ -142,16 +149,31 @@ fun ProductListItemOfList(
                         clip = true
                         shape = RoundedCornerShape(shape10)
                     },
-                painter = ColorPainter(Color.White),
-                contentDescription = "Красный прямоугольник"
+                painter = image,
+                contentDescription = "Изображение товара"
             )
             Text(
-                text = nameThings,
+                text = productItem.productName,
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(5.dp),
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
             )
             Text(
-                text = price
+                text = "${productItem.price} руб./${productItem.price}",
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
+            )
+            Text(
+                text = "${productItem.adType}",
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
             )
         }
     }
@@ -226,7 +248,7 @@ fun PullOutPanelPreview(){
 @Composable
 fun ScreenListOfRentalOffersPreview(){
     val navController = rememberNavController()
-    ProductListScreen(navController = navController)
+    //ProductListItemOfList(navController = navController, "Name", "1488", "day", true, "rent")
 }
 
 @Preview
