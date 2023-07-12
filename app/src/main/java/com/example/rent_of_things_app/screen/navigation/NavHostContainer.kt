@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.rent_of_things_app.screen.navigation.Routes
+import com.example.rent_of_things_app.screen.offer_list_screens.RentalOffersListScreen
 
 @Composable
 fun NavHostContainer(
@@ -16,16 +18,20 @@ fun NavHostContainer(
 
     NavHost(
         navController = navController,
-        startDestination = "list_rental_offers",
+        startDestination = Routes.ProductListScreenRoute.route,
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
 
-            composable("list_rental_offers") {
-               // ScreenListOfRentalOffers()
+            composable(Routes.ProductListScreenRoute.route) {
+                ProductListScreen()
             }
 
-            composable("profile") {
-                SignUpScreen()
+            composable(Routes.RentalOffersListScreenRoute.route) {
+                RentalOffersListScreen()
+            }
+
+            composable(Routes.ProfileScreenRoute.route) {
+                ProfileScreen()
             }
         })
 

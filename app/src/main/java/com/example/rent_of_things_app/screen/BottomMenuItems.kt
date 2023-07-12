@@ -5,6 +5,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.rent_of_things_app.screen.navigation.Routes
 
 data class BottomMenuItem(val label: String, val icon: ImageVector, var route: String)
 
@@ -13,17 +14,17 @@ object ListOfBottomMenuItems {
         BottomMenuItem(
             label = "Поиск вещей",
             icon = Icons.Outlined.Search,
-            route = "list_rental_offers"
+            route = Routes.ProductListScreenRoute.route
         ),
         BottomMenuItem(
             label = "Мои вещи",
             icon = Icons.Outlined.ShoppingCart,
-            route = "list_rental_offers"
+            route = Routes.RentalOffersListScreenRoute.route
         ),
         BottomMenuItem(
             label = "Профиль",
             icon = Icons.Outlined.Person,
-            route = "profile"
+            route = Routes.ProfileScreenRoute.route
         )
     )
 }
