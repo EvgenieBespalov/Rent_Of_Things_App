@@ -33,11 +33,13 @@ fun ProductCardScreen(
 ){
     val state by viewModel.state.observeAsState(ProductCardScreenUiState.Content("ii"))
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White),
-        contentAlignment = Alignment.BottomCenter,
+            .background(color = Color.White)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+        //contentAlignment = Alignment.BottomCenter,
     ){
         when(state){
             ProductCardScreenUiState.Initial    -> viewModel.getProductInfo()
@@ -86,7 +88,6 @@ fun ProductCardMainInfo(){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .background(color = backgroundGray),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

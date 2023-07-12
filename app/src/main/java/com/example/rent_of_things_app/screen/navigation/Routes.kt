@@ -4,4 +4,5 @@ sealed class Routes(val route: String) {
     object ProfileScreenRoute : Routes("Profile")
     object ProductListScreenRoute : Routes("ProductList")
     object RentalOffersListScreenRoute : Routes("RentalOffersList")
+    object ProductCardScreenRoute : Routes("ProductCard")
 }

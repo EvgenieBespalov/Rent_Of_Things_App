@@ -23,7 +23,7 @@ fun NavHostContainer(
         builder = {
 
             composable(Routes.ProductListScreenRoute.route) {
-                ProductListScreen()
+                ProductListScreen(navController = navController)
             }
 
             composable(Routes.RentalOffersListScreenRoute.route) {
@@ -32,6 +32,10 @@ fun NavHostContainer(
 
             composable(Routes.ProfileScreenRoute.route) {
                 ProfileScreen()
+            }
+
+            composable(Routes.ProductCardScreenRoute.route) {
+                ProductCardScreen()
             }
         })
 
