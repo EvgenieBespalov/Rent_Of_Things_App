@@ -9,7 +9,9 @@ import org.koin.dsl.module
 fun providePresentationModule(): Module =
     module {
         viewModel {
-            ProductListScreenViewModel()
+            ProductListScreenViewModel(
+                getAllProductUseCase = get()
+            )
         }
         viewModel {
             RentalOffersListScreenViewModel()

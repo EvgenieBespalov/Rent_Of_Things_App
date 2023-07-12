@@ -24,7 +24,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.rent_of_things_app.R
+import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.screen.navigation.Routes
@@ -53,7 +55,7 @@ fun ProductListScreen(
         }
     }
 
-    val state by viewModel.state.observeAsState(ProductListScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
     //viewModel.getListProduct()
 
     Box(
@@ -65,9 +67,12 @@ fun ProductListScreen(
     ) {
 
         when(state){
-            ProductListScreenUiState.Initial    -> viewModel.getProductList()
+            ProductListScreenUiState.Initial    -> viewModel.getAllProduct()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
-            is ProductListScreenUiState.Content -> ProductListListOfProducts(navController = navController)
+            is ProductListScreenUiState.Content -> ProductListListOfProducts(
+                productList = (state as ProductListScreenUiState.Content).productList,
+                navController = navController
+            )
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
         }
 
@@ -82,17 +87,21 @@ fun ProductListScreen(
 }
 
 @Composable
-fun ProductListListOfProducts(navController: NavHostController){
+fun ProductListListOfProducts(
+    productList: List<ProductEntity>,
+    navController: NavHostController
+){
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
     ) {
-        items(100) { index ->
-            ProductListItemOfList(
-                navController = navController,
-                nameThings = "Name $index",
-                price = "Price $index"
-            )
+        productList.forEach {
+            item{
+                ProductListItemOfList(
+                    navController = navController,
+                    productItem = it
+                )
+            }
         }
     }
 }
@@ -100,9 +109,10 @@ fun ProductListListOfProducts(navController: NavHostController){
 @Composable
 fun ProductListItemOfList(
     navController: NavHostController,
-    nameThings: String,
-    price: String
+    productItem: ProductEntity
 ){
+    val image =
+        rememberAsyncImagePainter(productItem.photo)
 
     Box(
         modifier = Modifier
@@ -112,7 +122,13 @@ fun ProductListItemOfList(
                 clip = true
                 shape = RoundedCornerShape(shape10)
             }
-            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10))
+            .border(
+                width = 2.dp,
+                color = when(productItem.productAvailable){
+                    true -> yellowActive
+                    false -> grey
+                                    },
+                shape = RoundedCornerShape(shape10))
             .clickable {
                 navController.navigate(Routes.ProductCardScreenRoute.route)
             },
@@ -133,16 +149,31 @@ fun ProductListItemOfList(
                         clip = true
                         shape = RoundedCornerShape(shape10)
                     },
-                painter = ColorPainter(Color.White),
-                contentDescription = "Красный прямоугольник"
+                painter = image,
+                contentDescription = "Изображение товара"
             )
             Text(
-                text = nameThings,
+                text = productItem.productName,
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(5.dp),
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
             )
             Text(
-                text = price
+                text = "${productItem.price} руб./${productItem.price}",
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
+            )
+            Text(
+                text = "${productItem.adType}",
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
             )
         }
     }
@@ -217,7 +248,7 @@ fun PullOutPanelPreview(){
 @Composable
 fun ScreenListOfRentalOffersPreview(){
     val navController = rememberNavController()
-    ProductListScreen(navController = navController)
+    //ProductListItemOfList(navController = navController, "Name", "1488", "day", true, "rent")
 }
 
 @Preview
