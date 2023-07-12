@@ -56,7 +56,6 @@ fun ProductListScreen(
     }
 
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
-    //viewModel.getListProduct()
 
     Box(
         Modifier
