@@ -4,10 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rent_of_things_app.domain.entity.UserEntity
+import com.example.rent_of_things_app.domain.usecase.RegistrationUserUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
-class SignUpScreenViewModel(): ViewModel() {
+class SignUpScreenViewModel(
+    private val registrationUserUseCase: RegistrationUserUseCase
+): ViewModel() {
     private val _state: MutableLiveData<SignUpScreenUiState> =
         MutableLiveData(SignUpScreenUiState.Initial)
     val state: LiveData<SignUpScreenUiState> = _state
@@ -18,12 +22,13 @@ class SignUpScreenViewModel(): ViewModel() {
         }
     }
 
-    fun getRentalOffersList() {
+    fun registrationUser(registrationUserData: UserEntity) {
         viewModelScope.launch {
-            _state.value = SignUpScreenUiState.Loading
+            //_state.value = SignUpScreenUiState.Loading
 
             try {
-                _state.value = SignUpScreenUiState.Content("it")
+                val userData = registrationUserUseCase(registrationUserData)
+                _state.value = SignUpScreenUiState.Content(userData)
             } catch (rethrow: CancellationException) {
                 throw rethrow
             } catch (ex: Exception) {

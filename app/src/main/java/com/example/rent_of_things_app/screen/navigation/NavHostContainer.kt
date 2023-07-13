@@ -31,7 +31,7 @@ fun NavHostContainer(
             }
 
             composable(Routes.ProfileScreenRoute.route) {
-                ProfileScreen()
+                ProfileScreen(navController = navController)
             }
 
             composable(Routes.ProductCardScreenRoute.route + "/{productId}") {
@@ -40,6 +40,10 @@ fun NavHostContainer(
 
             composable(Routes.ProductCreationScreenRoute.route) {
                 ProductCreationScreen()
+            }
+
+            composable(Routes.SignUpScreenRoute.route) {
+                SignUpScreen(navController = navController)
             }
         })
 
