@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,9 +40,6 @@ fun SignInScreen(
     viewModel: SignInScreenViewModel = koinViewModel(),
     navController: NavHostController
 ) {
-    var textFieldEmail by remember { mutableStateOf("") }
-    var textFieldPassword by remember { mutableStateOf("") }
-
     val state by viewModel.state.observeAsState(SignInScreenUiState.Content("ii"))
     when(state){
         SignInScreenUiState.Initial    -> Unit
@@ -102,13 +101,26 @@ fun SignInScreen(
                         fontSize = 25.sp,
                         color = greyText
                     )
+
+                    val maxSizeTextField = 30
+
+                    var userEmailTextField by remember { mutableStateOf("") }
+                    var userEmailCorrectTextField by remember { mutableStateOf(false) }
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
                         leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
-                        value = textFieldEmail,
-                        onValueChange = { textFieldEmail = it },
+                        value = userEmailTextField,
+                        onValueChange = {
+                            if (it.length <= maxSizeTextField) userEmailTextField = it
+
+                            if (it.length > 0 && it.length <= maxSizeTextField && android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches())
+                                userEmailCorrectTextField = true
+                            else
+                                userEmailCorrectTextField = false
+                                        },
+                        isError = userEmailCorrectTextField,
                         placeholder = {
                             Text(
                                 "Email",
@@ -120,21 +132,29 @@ fun SignInScreen(
                             placeholderColor = greyText,
                             focusedBorderColor = grey,
                             unfocusedBorderColor = grey,
-                            disabledBorderColor = grey,
-                            errorBorderColor = grey,
-                            leadingIconColor = grey
+                            errorBorderColor = yellowActive,
+                            leadingIconColor = grey,
+                            errorLeadingIconColor = yellowActive
                         ),
                         shape = MaterialTheme.shapeScheme.shape30,
                         textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                     )
 
+                    var userPasswordTextField by remember { mutableStateOf("") }
+                    var userPasswordCorrectTextField by remember { mutableStateOf(false) }
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
                         leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
-                        value = textFieldPassword,
-                        onValueChange = { textFieldPassword = it },
+                        value = userPasswordTextField,
+                        onValueChange = {
+                            if (it.length <= maxSizeTextField) userPasswordTextField = it
+                            if (it.length > 0 && it.length <= maxSizeTextField) userPasswordCorrectTextField = true
+                            else userPasswordCorrectTextField = false
+                                        },
+                        isError = userPasswordCorrectTextField,
                         placeholder = {
                             Text(
                                 "Пароль",
@@ -146,12 +166,13 @@ fun SignInScreen(
                             placeholderColor = greyText,
                             focusedBorderColor = grey,
                             unfocusedBorderColor = grey,
-                            disabledBorderColor = grey,
-                            errorBorderColor = grey,
-                            leadingIconColor = grey
+                            errorBorderColor = yellowActive,
+                            leadingIconColor = grey,
+                            errorLeadingIconColor = yellowActive
                         ),
                         shape = MaterialTheme.shapeScheme.shape30,
                         textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
 
 
