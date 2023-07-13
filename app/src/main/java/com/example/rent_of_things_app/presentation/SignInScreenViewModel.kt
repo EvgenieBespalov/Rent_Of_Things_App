@@ -28,7 +28,7 @@ class SignInScreenViewModel(
 
             try {
                 val userData = authorizationUserUseCase(authorizationUserData)
-                _state.value = SignInScreenUiState.Content(userData)
+                _state.value = userData?.let { SignInScreenUiState.Content(it) }
             } catch (rethrow: CancellationException) {
                 throw rethrow
             } catch (ex: Exception) {

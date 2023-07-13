@@ -28,7 +28,7 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun getUserIdFromApp(): String? = sharedPreferences.getString("USER_ID", null)
+    override suspend fun getUserIdFromApp(): String? = sharedPreferences.getString("USER_ID", "4d561e90-16eb-4040-bbc2-573054dfcb2a")
 
     override suspend fun deleteUserFromApp(user: UserEntity) {
         sharedPreferences.edit().clear().apply()

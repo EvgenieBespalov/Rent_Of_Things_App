@@ -6,24 +6,12 @@ import com.example.rent_of_things_app.domain.entity.UserEntity
 class UserConverter {
     fun convertUserEntityInUserRegistrationRequestModel(from: UserEntity): UserRegistrationRequestModel =
         UserRegistrationRequestModel(
-            email = when(from.email){
-                null -> ""
-                else -> from.email
-                                    },
+            email = from.email ?: "",
             socialNetworks = from.socialNetworks,
-            name = when(from.name){
-                null -> ""
-                else -> from.name
-                                  },
+            name = from.name ?: "",
             middleName = from.middleName,
-            surname = when(from.surname){
-                null -> ""
-                else -> from.surname
-                                        },
-            password = when(from.password){
-                null -> "123"
-                else -> from.password
-            }
+            surname = from.surname ?: "",
+            password = from.password ?: ""
         )
 
     fun converUserModelInUserEntity(from: UserModel): UserEntity =
@@ -70,13 +58,7 @@ class UserConverter {
 
     fun convertUserEntityInUserAuthorizationRequestModel(from: UserEntity): UserAuthorizationRequestModel =
         UserAuthorizationRequestModel(
-            email = when(from.email){
-                null -> ""
-                else -> from.email
-            },
-            password = when(from.password){
-                null -> ""
-                else -> from.password
-            }
+            email = from.email ?: "",
+            password = from.password ?: ""
         )
 }

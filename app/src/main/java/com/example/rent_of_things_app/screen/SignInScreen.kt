@@ -42,12 +42,12 @@ fun SignInScreen(
     navController: NavHostController
 ) {
     val state by viewModel.state.observeAsState(SignInScreenUiState.Initial)
-    when(state){
-        SignInScreenUiState.Initial    -> Unit
-        SignInScreenUiState.Loading    -> ScreenLoadind()
-        is SignInScreenUiState.Content -> Unit
-        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
-    }
+//    when(state){
+//        SignInScreenUiState.Initial    -> Unit
+//        SignInScreenUiState.Loading    -> ScreenLoadind()
+//        is SignInScreenUiState.Content -> Unit
+//        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+//    }
 
     Box(
         modifier = Modifier
@@ -95,13 +95,30 @@ fun SignInScreen(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Text(
-                        modifier = Modifier
-                            .padding(vertical = 30.dp),
-                        text = "Вход в профиль",
-                        fontSize = 25.sp,
-                        color = greyText
-                    )
+                    when(state){
+                        SignInScreenUiState.Initial    -> Unit
+                        SignInScreenUiState.Loading    -> ScreenLoadind()
+                        is SignInScreenUiState.Content -> {
+                            (state as SignInScreenUiState.Content).userData.id?.let {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(vertical = 30.dp),
+                                    text = it,
+                                    fontSize = 25.sp,
+                                    color = greyText
+                                )
+                            }
+                        }
+                        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+                    }
+
+//                    Text(
+//                        modifier = Modifier
+//                            .padding(vertical = 30.dp),
+//                        text = "Вход в профиль",
+//                        fontSize = 25.sp,
+//                        color = greyText
+//                    )
 
                     val maxSizeTextField = 30
 
@@ -196,6 +213,7 @@ fun SignInScreen(
                                 )
                             )
                         },
+                        enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = yellowActive,
                             contentColor = Color.White
@@ -210,44 +228,9 @@ fun SignInScreen(
                 }
             }
 
-
+            SignInScreenRow(navController = navController)
         }
     }
-}
-
-@Composable
-fun OutlinedTextFieldSign(
-    icon: ImageVector,
-    placeholderText: String
-){
-    var textField by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        modifier = Modifier
-            .padding(20.dp, 0.dp, 20.dp, 20.dp)
-            .height(55.dp)
-            .fillMaxWidth(),
-        leadingIcon = { Icon(icon, contentDescription = null) },
-        value = textField,
-        onValueChange = { textField = it },
-        placeholder = {
-            Text(
-                placeholderText,
-                fontSize = fontTextFieldSignScreen
-            ) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.Black,
-            backgroundColor = Color.White,
-            placeholderColor = greyText,
-            focusedBorderColor = grey,
-            unfocusedBorderColor = grey,
-            disabledBorderColor = grey,
-            errorBorderColor = grey,
-            leadingIconColor = grey
-        ),
-        shape = MaterialTheme.shapeScheme.shape30,
-        textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-    )
 }
 
 @Composable
