@@ -1,9 +1,6 @@
 package com.example.rent_of_things_app.data.converter
 
-import com.example.rent_of_things_app.data.model.user.UserAuthorizationAnswerModel
-import com.example.rent_of_things_app.data.model.user.UserAuthorizationRequestModel
-import com.example.rent_of_things_app.data.model.user.UserRegistrationAnswerModel
-import com.example.rent_of_things_app.data.model.user.UserRegistrationRequestModel
+import com.example.rent_of_things_app.data.model.user.*
 import com.example.rent_of_things_app.domain.entity.UserEntity
 
 class UserConverter {
@@ -27,6 +24,19 @@ class UserConverter {
                 null -> "123"
                 else -> from.password
             }
+        )
+
+    fun converUserModelInUserEntity(from: UserModel): UserEntity =
+        UserEntity(
+            id = from.id,
+            email = from.email,
+            socialNetworks = from.socialNetworks,
+            name = from.name,
+            surname = from.surname,
+            middleName = from.middleName,
+            registrationDate = from.registrationDate,
+            password = null,
+            admin = false
         )
 
     fun convertUserRegistrationAnswerModelInUserEntity(from: UserRegistrationAnswerModel): UserEntity =

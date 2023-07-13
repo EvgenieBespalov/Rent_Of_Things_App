@@ -19,6 +19,9 @@ class UserRepositoryImpl(
     override suspend fun userAuthorization(userAuthorizationData: UserEntity): UserEntity =
         userConverter.convertUserAuthorizationAnswerModelInUserEntity(userApi.userAuthorization(userConverter.convertUserEntityInUserAuthorizationRequestModel(userAuthorizationData)))
 
+    override suspend fun getUserById(userId: String): UserEntity =
+        userConverter.converUserModelInUserEntity(userApi.getUserById(userId))
+
     override suspend fun saveUserIdInApp(user: UserEntity) {
         sharedPreferences.edit().apply(){
             putString("USER_ID", user.id)
