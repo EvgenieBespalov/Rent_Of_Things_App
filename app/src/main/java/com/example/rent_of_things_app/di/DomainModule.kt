@@ -1,5 +1,6 @@
 package com.example.rent_of_things_app.di
 
+import android.content.SharedPreferences
 import com.example.rent_of_things_app.data.api.ProductApi
 import com.example.rent_of_things_app.data.api.UserApi
 import com.example.rent_of_things_app.data.converter.ProductConverter
@@ -22,8 +23,9 @@ private fun provideProductApiRepository(
 
 private fun provideUserApiRepository(
     userApi: UserApi,
-    converter: UserConverter
-): UserRepository = UserRepositoryImpl(userApi, converter)
+    converter: UserConverter,
+    sharedPreferences: SharedPreferences
+): UserRepository = UserRepositoryImpl(userApi, converter, sharedPreferences)
 
 fun provideDomainModule(): Module =
     module {
@@ -37,7 +39,8 @@ fun provideDomainModule(): Module =
         single {
             provideUserApiRepository(
                 userApi = get(),
-                converter = get()
+                converter = get(),
+                sharedPreferences = get()
             )
         }
 
