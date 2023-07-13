@@ -13,4 +13,7 @@ class UserRepositoryImpl(
 ): UserRepository {
     override suspend fun userRegistration(userRegistrationData: UserEntity): UserEntity =
         userConverter.convertUserRegistrationAnswerModelInUserEntity(userApi.userRegistration(userConverter.convertUserEntityInUserRegistrationRequestModel(userRegistrationData)))
+
+    override suspend fun userAuthorization(userAuthorizationData: UserEntity): UserEntity =
+        userConverter.convertUserAuthorizationAnswerModelInUserEntity(userApi.userAuthorization(userConverter.convertUserEntityInUserAuthorizationRequestModel(userAuthorizationData)))
 }
