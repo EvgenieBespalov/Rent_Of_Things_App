@@ -1,8 +1,7 @@
 package com.example.rent_of_things_app.screen
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,10 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.domain.entity.UserEntity
-import com.example.rent_of_things_app.presentation.SignInScreenUiState
-import com.example.rent_of_things_app.presentation.SignInScreenViewModel
-import com.example.rent_of_things_app.presentation.SignUpScreenUiState
-import com.example.rent_of_things_app.presentation.SignUpScreenViewModel
+import com.example.rent_of_things_app.presentation.*
 import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,7 +36,7 @@ fun SignUpScreen(
     viewModel: SignUpScreenViewModel = koinViewModel(),
     navController: NavHostController
 )  {
-    val state by viewModel.state.observeAsState(SignUpScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(SignUpScreenUiState.Initial)
     when(state){
         SignUpScreenUiState.Initial    -> Unit
         SignUpScreenUiState.Loading    -> ScreenLoadind()
@@ -51,7 +47,8 @@ fun SignUpScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -70,6 +67,8 @@ fun SignUpScreen(
         var userSocialNetworksTextField by remember { mutableStateOf("") }
         var userPasswordTextField by remember { mutableStateOf("") }
 
+        val maxSizeTextField = 30
+
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -78,8 +77,8 @@ fun SignUpScreen(
             leadingIcon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
             value = userNameTextField,
             onValueChange = {
-                //if (it.length <= maxChar)
-                userNameTextField = it
+                if (it.length <= maxSizeTextField)
+                    userNameTextField = it
                             },
             placeholder = {
                 Text(
@@ -108,7 +107,10 @@ fun SignUpScreen(
                 .fillMaxWidth(),
             leadingIcon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
             value = userMiddleNameTextField,
-            onValueChange = { userMiddleNameTextField = it },
+            onValueChange = {
+                if (it.length <= maxSizeTextField)
+                    userMiddleNameTextField = it
+                            },
             placeholder = {
                 Text(
                     "Отчество",
@@ -136,7 +138,10 @@ fun SignUpScreen(
                 .fillMaxWidth(),
             leadingIcon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
             value = userSurnameTextField,
-            onValueChange = { userSurnameTextField = it },
+            onValueChange = {
+                if (it.length <= maxSizeTextField)
+                    userSurnameTextField = it
+                            },
             placeholder = {
                 Text(
                     "Фамилия",
@@ -164,7 +169,10 @@ fun SignUpScreen(
                 .fillMaxWidth(),
             leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
             value = userEmailTextField,
-            onValueChange = { userEmailTextField = it },
+            onValueChange = {
+                if (it.length <= maxSizeTextField)
+                    userEmailTextField = it
+                            },
             placeholder = {
                 Text(
                     "Email",
@@ -192,7 +200,9 @@ fun SignUpScreen(
                 .fillMaxWidth(),
             leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null) },
             value = userSocialNetworksTextField,
-            onValueChange = { userSocialNetworksTextField = it },
+            onValueChange = {
+                    userSocialNetworksTextField = it
+                            },
             placeholder = {
                 Text(
                     "Социальные сети",
@@ -220,7 +230,10 @@ fun SignUpScreen(
                 .fillMaxWidth(),
             leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
             value = userPasswordTextField,
-            onValueChange = { userPasswordTextField = it },
+            onValueChange = {
+                if (it.length <= maxSizeTextField)
+                    userPasswordTextField = it
+                            },
             placeholder = {
                 Text(
                     "Пароль",
@@ -240,13 +253,6 @@ fun SignUpScreen(
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
-
-        //OutlinedTextFieldSign(Icons.Outlined.AccountCircle, "Имя")
-        //OutlinedTextFieldSign(Icons.Outlined.AccountCircle, "Отчество")
-        //OutlinedTextFieldSign(Icons.Outlined.AccountCircle, "Фамилия")
-        //OutlinedTextFieldSign(Icons.Outlined.Email, "Email")
-        //OutlinedTextFieldSign(Icons.Outlined.Person, "Социальные сети")
-        //OutlinedTextFieldSign(Icons.Outlined.Lock, "Пароль")
 
         Button(
             modifier = Modifier

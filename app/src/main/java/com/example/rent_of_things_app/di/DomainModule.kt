@@ -10,6 +10,7 @@ import com.example.rent_of_things_app.domain.repository.ProductRepository
 import com.example.rent_of_things_app.domain.repository.UserRepository
 import com.example.rent_of_things_app.domain.usecase.GetAllProductUseCase
 import com.example.rent_of_things_app.domain.usecase.GetIdProductUseCase
+import com.example.rent_of_things_app.domain.usecase.RegistrationUserUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -41,4 +42,5 @@ fun provideDomainModule(): Module =
 
         factory { GetAllProductUseCase(repository = get()) }
         factory { GetIdProductUseCase(repository = get()) }
+        factory { RegistrationUserUseCase(repository = get()) }
     }

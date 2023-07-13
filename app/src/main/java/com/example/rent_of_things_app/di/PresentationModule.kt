@@ -28,7 +28,9 @@ fun providePresentationModule(): Module =
             SignInScreenViewModel()
         }
         viewModel {
-            SignUpScreenViewModel()
+            SignUpScreenViewModel(
+                registrationUserUseCase = get()
+            )
         }
         viewModel {
             ProfileScreenViewModel()

@@ -28,7 +28,7 @@ class SignUpScreenViewModel(
 
             try {
                 val userData = registrationUserUseCase(registrationUserData)
-                _state.value = SignUpScreenUiState.Content("it")
+                _state.value = SignUpScreenUiState.Content(userData)
             } catch (rethrow: CancellationException) {
                 throw rethrow
             } catch (ex: Exception) {
