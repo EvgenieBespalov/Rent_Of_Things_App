@@ -1,10 +1,7 @@
 package com.example.rent_of_things_app
 
 import android.app.Application
-import com.example.rent_of_things_app.di.provideDataModule
-import com.example.rent_of_things_app.di.provideDomainModule
-import com.example.rent_of_things_app.di.provideNetworkModule
-import com.example.rent_of_things_app.di.providePresentationModule
+import com.example.rent_of_things_app.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -20,7 +17,7 @@ class MyApplication : Application() {
                 provideDataModule(),
                 provideDomainModule(),
                 providePresentationModule(),
-                //provideDataBaseModule(),
+                provideSharedPreferencesModule(),
             )
         }
     }
