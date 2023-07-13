@@ -10,5 +10,6 @@ data class UserEntity(
     val surname: String,
     val middleName: String,
     val registrationDate: Date,
+    val password: String?,
     val admin: Boolean
 )
