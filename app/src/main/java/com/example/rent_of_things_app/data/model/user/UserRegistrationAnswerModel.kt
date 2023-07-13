@@ -1,8 +1,11 @@
 package com.example.rent_of_things_app.data.model.user
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
-data class UserRegistrationRequestModel(
+data class UserRegistrationAnswerModel(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("email")
     val email: String,
     @SerializedName("social_networks")
@@ -13,6 +16,6 @@ data class UserRegistrationRequestModel(
     val surname: String,
     @SerializedName("middle_name")
     val middleName: String,
-    @SerializedName("password")
-    val password: String
+    @SerializedName("registration_date")
+    val registrationDate: Date
 )
