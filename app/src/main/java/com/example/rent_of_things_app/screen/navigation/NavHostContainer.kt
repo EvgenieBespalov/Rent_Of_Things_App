@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.rent_of_things_app.screen.navigation.Routes
 import com.example.rent_of_things_app.screen.offer_list_screens.RentalOffersListScreen
+import com.example.rent_of_things_app.screen.theme.SignInScreen
 
 @Composable
 fun NavHostContainer(
@@ -44,6 +45,10 @@ fun NavHostContainer(
 
             composable(Routes.SignUpScreenRoute.route) {
                 SignUpScreen(navController = navController)
+            }
+
+            composable(Routes.SignInScreenRoute.route) {
+                SignInScreen(navController = navController)
             }
         })
 

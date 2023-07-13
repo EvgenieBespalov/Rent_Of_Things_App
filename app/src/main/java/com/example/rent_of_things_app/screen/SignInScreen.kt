@@ -21,6 +21,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.presentation.SignInScreenUiState
@@ -28,11 +30,13 @@ import com.example.rent_of_things_app.presentation.SignInScreenViewModel
 import com.example.rent_of_things_app.screen.ProductListListOfProducts
 import com.example.rent_of_things_app.screen.ScreenError
 import com.example.rent_of_things_app.screen.ScreenLoadind
+import com.example.rent_of_things_app.screen.navigation.Routes
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen(
-    viewModel: SignInScreenViewModel = koinViewModel()
+    viewModel: SignInScreenViewModel = koinViewModel(),
+    navController: NavHostController
 ) {
     var textFieldEmail by remember { mutableStateOf("") }
     var textFieldPassword by remember { mutableStateOf("") }
@@ -98,7 +102,7 @@ fun SignInScreen(
                         fontSize = 25.sp,
                         color = greyText
                     )
-                    /*OutlinedTextField(
+                    OutlinedTextField(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
@@ -148,10 +152,8 @@ fun SignInScreen(
                         ),
                         shape = MaterialTheme.shapeScheme.shape30,
                         textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-                    )*/
-                    //Возможно не сработает, так что пусть пока повисит в комментариях
-                    OutlinedTextFieldSign(Icons.Outlined.Email, "Email")
-                    OutlinedTextFieldSign(Icons.Outlined.Lock, "Пароль")
+                    )
+
 
                     Button(
                         modifier = Modifier
@@ -172,20 +174,7 @@ fun SignInScreen(
                 }
             }
 
-            Row(
-                modifier = Modifier.padding(vertical = 20.dp)
-            ){
-                Text(
-                    text = "Нет аккаунта? ",
-                    fontSize = 20.sp,
-                    color = greyText
-                )
-                Text("Зарегистрируйтесь",
-                    fontSize = 20.sp,
-                    modifier = Modifier.clickable( onClick = {  }),
-                    color = yellowActive
-                )
-            }
+
         }
     }
 }
@@ -225,8 +214,29 @@ fun OutlinedTextFieldSign(
     )
 }
 
+@Composable
+fun SignInScreenRow(navController: NavHostController){
+    Row(
+        modifier = Modifier.padding(vertical = 20.dp)
+    ){
+        Text(
+            text = "Нет аккаунта? ",
+            fontSize = 20.sp,
+            color = greyText
+        )
+        Text("Зарегистрируйтесь",
+            fontSize = 20.sp,
+            modifier = Modifier.clickable( onClick = {
+                navController.navigate(Routes.SignUpScreenRoute.route)
+            }),
+            color = yellowActive
+        )
+    }
+}
+
 @Preview
 @Composable
 fun ScreenSignInPreview(){
-    SignInScreen()
+    val navController = rememberNavController()
+    SignInScreen(navController = navController)
 }
