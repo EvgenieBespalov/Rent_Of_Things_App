@@ -199,8 +199,9 @@ fun OutlinedTextFieldSign(
 
     OutlinedTextField(
         modifier = Modifier
-            .padding(bottom = 20.dp)
-            .size(300.dp, 55.dp),
+            .padding(20.dp, 0.dp, 20.dp, 20.dp)
+            .height(55.dp)
+            .fillMaxWidth(),
         leadingIcon = { Icon(icon, contentDescription = null) },
         value = textField,
         onValueChange = { textField = it },
