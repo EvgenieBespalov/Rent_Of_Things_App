@@ -60,15 +60,18 @@ fun SignUpScreen(
             color = greyText
         )
 
-        var userNameTextField by remember { mutableStateOf("") }
-        var userMiddleNameTextField by remember { mutableStateOf("") }
-        var userSurnameTextField by remember { mutableStateOf("") }
-        var userEmailTextField by remember { mutableStateOf("") }
-        var userSocialNetworksTextField by remember { mutableStateOf("") }
-        var userPasswordTextField by remember { mutableStateOf("") }
+
+
+
+
+
+
 
         val maxSizeTextField = 30
 
+
+        var userNameTextField by remember { mutableStateOf("") }
+        var userNameCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -77,9 +80,11 @@ fun SignUpScreen(
             leadingIcon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
             value = userNameTextField,
             onValueChange = {
-                if (it.length <= maxSizeTextField)
-                    userNameTextField = it
+                if (it.length <= maxSizeTextField) userNameTextField = it
+                if (it.length > 0 && it.length <= maxSizeTextField) userNameCorrectTextField = true
+                else userNameCorrectTextField = false
                             },
+            isError = userNameCorrectTextField,
             placeholder = {
                 Text(
                     "Имя",
@@ -91,15 +96,17 @@ fun SignUpScreen(
                 placeholderColor = greyText,
                 focusedBorderColor = grey,
                 unfocusedBorderColor = grey,
-                disabledBorderColor = grey,
-                errorBorderColor = grey,
-                leadingIconColor = grey
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
+        var userMiddleNameTextField by remember { mutableStateOf("") }
+        var userMiddleNameCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -108,9 +115,11 @@ fun SignUpScreen(
             leadingIcon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
             value = userMiddleNameTextField,
             onValueChange = {
-                if (it.length <= maxSizeTextField)
-                    userMiddleNameTextField = it
+                if (it.length <= maxSizeTextField) userMiddleNameTextField = it
+                if (it.length > 0 && it.length <= maxSizeTextField) userMiddleNameCorrectTextField = true
+                else userMiddleNameCorrectTextField = false
                             },
+            isError = userMiddleNameCorrectTextField,
             placeholder = {
                 Text(
                     "Отчество",
@@ -122,15 +131,17 @@ fun SignUpScreen(
                 placeholderColor = greyText,
                 focusedBorderColor = grey,
                 unfocusedBorderColor = grey,
-                disabledBorderColor = grey,
-                errorBorderColor = grey,
-                leadingIconColor = grey
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
+        var userSurnameTextField by remember { mutableStateOf("") }
+        var userSurnameCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -139,9 +150,11 @@ fun SignUpScreen(
             leadingIcon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
             value = userSurnameTextField,
             onValueChange = {
-                if (it.length <= maxSizeTextField)
-                    userSurnameTextField = it
+                if (it.length <= maxSizeTextField) userSurnameTextField = it
+                if (it.length > 0 && it.length <= maxSizeTextField) userSurnameCorrectTextField = true
+                else userSurnameCorrectTextField = false
                             },
+            isError = userSurnameCorrectTextField,
             placeholder = {
                 Text(
                     "Фамилия",
@@ -153,15 +166,17 @@ fun SignUpScreen(
                 placeholderColor = greyText,
                 focusedBorderColor = grey,
                 unfocusedBorderColor = grey,
-                disabledBorderColor = grey,
-                errorBorderColor = grey,
-                leadingIconColor = grey
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
+        var userEmailTextField by remember { mutableStateOf("") }
+        var userEmailCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -172,7 +187,13 @@ fun SignUpScreen(
             onValueChange = {
                 if (it.length <= maxSizeTextField)
                     userEmailTextField = it
+
+                if (it.length > 0 && it.length <= maxSizeTextField && android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches())
+                    userEmailCorrectTextField = true
+                else
+                    userEmailCorrectTextField = false
                             },
+            isError = userEmailCorrectTextField,
             placeholder = {
                 Text(
                     "Email",
@@ -184,15 +205,17 @@ fun SignUpScreen(
                 placeholderColor = greyText,
                 focusedBorderColor = grey,
                 unfocusedBorderColor = grey,
-                disabledBorderColor = grey,
-                errorBorderColor = grey,
-                leadingIconColor = grey
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
+        var userSocialNetworksTextField by remember { mutableStateOf("") }
+        var userSocialNetworksCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -202,10 +225,13 @@ fun SignUpScreen(
             value = userSocialNetworksTextField,
             onValueChange = {
                     userSocialNetworksTextField = it
+                    if (it.length > 0) userSocialNetworksCorrectTextField = true
+                    else userSocialNetworksCorrectTextField = false
                             },
+            isError = userSocialNetworksCorrectTextField,
             placeholder = {
                 Text(
-                    "Социальные сети",
+                    "Соцсети через пробел",
                     fontSize = fontTextFieldSignScreen
                 ) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -214,15 +240,17 @@ fun SignUpScreen(
                 placeholderColor = greyText,
                 focusedBorderColor = grey,
                 unfocusedBorderColor = grey,
-                disabledBorderColor = grey,
-                errorBorderColor = grey,
-                leadingIconColor = grey
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
+        var userPasswordTextField by remember { mutableStateOf("") }
+        var userPasswordCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
                 .padding(20.dp, 0.dp, 20.dp, 20.dp)
@@ -231,9 +259,11 @@ fun SignUpScreen(
             leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
             value = userPasswordTextField,
             onValueChange = {
-                if (it.length <= maxSizeTextField)
-                    userPasswordTextField = it
+                if (it.length <= maxSizeTextField) userPasswordTextField = it
+                if (it.length > 0 && it.length <= maxSizeTextField) userPasswordCorrectTextField = true
+                else userPasswordCorrectTextField = false
                             },
+            isError = userPasswordCorrectTextField,
             placeholder = {
                 Text(
                     "Пароль",
@@ -245,9 +275,9 @@ fun SignUpScreen(
                 placeholderColor = greyText,
                 focusedBorderColor = grey,
                 unfocusedBorderColor = grey,
-                disabledBorderColor = grey,
-                errorBorderColor = grey,
-                leadingIconColor = grey
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
             textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
@@ -264,18 +294,26 @@ fun SignUpScreen(
                               id = null,
                               email = userEmailTextField,
                               name = userNameTextField,
-                              middleName = userMiddleNameTextField,
+                              middleName = when(userMiddleNameTextField){
+                                  "" -> null
+                                  else -> userMiddleNameTextField
+                                                                        },
                               surname = userSurnameTextField,
                               password = userPasswordTextField,
                               registrationDate = null,
                               admin = false,
-                              socialNetworks = listOf(userSocialNetworksTextField)
+                              socialNetworks = when(userSocialNetworksTextField){
+                                  "" -> null
+                                  else -> listOf(*userSocialNetworksTextField.split(" ").toTypedArray())
+                              }
                           )
                       )
             },
+            enabled = userNameCorrectTextField && userSurnameCorrectTextField && userEmailCorrectTextField && userPasswordCorrectTextField,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = yellowActive,
-                contentColor = Color.White
+                contentColor = Color.White,
+                disabledBackgroundColor = yellowInactive
             ),
             shape = MaterialTheme.shapeScheme.shape30,
         ){
