@@ -17,30 +17,33 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.rent_of_things_app.presentation.ProductCardScreenUiState
 import com.example.rent_of_things_app.presentation.ProductCardScreenViewModel
 import com.example.rent_of_things_app.presentation.ProfileScreenUiState
 import com.example.rent_of_things_app.presentation.ProfileScreenViewModel
+import com.example.rent_of_things_app.screen.navigation.Routes
 import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileScreenViewModel = koinViewModel()
+    viewModel: ProfileScreenViewModel = koinViewModel(),
+    navController: NavHostController
 ){
     val state by viewModel.state.observeAsState(ProfileScreenUiState.Content("ii"))
 
     when(state){
         ProfileScreenUiState.Initial    -> viewModel.getProfileInfo()
         ProfileScreenUiState.Loading    -> ScreenLoadind()
-        is ProfileScreenUiState.Content -> ProfileScreenMain()
+        is ProfileScreenUiState.Content -> ProfileScreenMain(navController = navController)
         is ProfileScreenUiState.Error   -> ScreenError(errorText = (state as ProfileScreenUiState.Error).message.orEmpty())
     }
 
 }
 
 @Composable
-fun ProfileScreenMain(){
+fun ProfileScreenMain(navController: NavHostController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -49,6 +52,7 @@ fun ProfileScreenMain(){
     ){
         ProfileScreenMainInfo()
         ProfileScreenEditButton()
+        ProfileScreenRegistrationButton(navController = navController)
     }
 }
 
@@ -159,8 +163,33 @@ fun ProfileScreenEditButton(){
     }
 }
 
+@Composable
+fun ProfileScreenRegistrationButton(navController: NavHostController){
+    Box(
+        modifier = Modifier
+            .background(color = Color.Transparent)
+            .padding(5.dp, 5.dp, 5.dp, 5.dp)
+    ){
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = {
+                navController.navigate(Routes.SignUpScreenRoute.route)
+                      },
+            colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive),
+            shape = RoundedCornerShape(shape10)
+        ) {
+            Text(
+                text = "Зарегистрироваться",
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 fun ProfileScreenPreview(){
-    ProfileScreen()
+    //ProfileScreen()
 }

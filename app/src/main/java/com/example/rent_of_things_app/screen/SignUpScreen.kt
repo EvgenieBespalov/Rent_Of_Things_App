@@ -24,6 +24,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.domain.entity.UserEntity
 import com.example.rent_of_things_app.presentation.SignInScreenUiState
 import com.example.rent_of_things_app.presentation.SignInScreenViewModel
@@ -34,7 +37,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpScreenViewModel = koinViewModel()
+    viewModel: SignUpScreenViewModel = koinViewModel(),
+    navController: NavHostController
 )  {
     val state by viewModel.state.observeAsState(SignUpScreenUiState.Content("ii"))
     when(state){
@@ -301,5 +305,6 @@ fun SignUpScreenRow(){
 @Preview
 @Composable
 fun ScreenSignUpPreview(){
-    SignUpScreen()
+    val navController = rememberNavController()
+    SignUpScreen(navController = navController)
 }
