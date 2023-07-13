@@ -7,4 +7,5 @@ sealed class Routes(val route: String) {
     object ProductCardScreenRoute : Routes("ProductCard")
     object ProductCreationScreenRoute : Routes("ProductCreation")
     object SignUpScreenRoute : Routes("SignUp")
+    object SignInScreenRoute : Routes("SignIn")
 }

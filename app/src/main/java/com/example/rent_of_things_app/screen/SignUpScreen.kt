@@ -28,6 +28,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.domain.entity.UserEntity
 import com.example.rent_of_things_app.presentation.*
+import com.example.rent_of_things_app.screen.navigation.Routes
 import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
 
@@ -60,15 +61,7 @@ fun SignUpScreen(
             color = greyText
         )
 
-
-
-
-
-
-
-
         val maxSizeTextField = 30
-
 
         var userNameTextField by remember { mutableStateOf("") }
         var userNameCorrectTextField by remember { mutableStateOf(false) }
@@ -323,13 +316,12 @@ fun SignUpScreen(
             )
         }
 
-
-        SignUpScreenRow()
+        SignUpScreenRow(navController = navController)
     }
 }
 
 @Composable
-fun SignUpScreenRow(){
+fun SignUpScreenRow(navController: NavHostController){
     Row(
         modifier = Modifier.padding(vertical = 20.dp)
     ){
@@ -340,7 +332,9 @@ fun SignUpScreenRow(){
         )
         Text("Войдите",
             fontSize = 20.sp,
-            modifier = Modifier.clickable( onClick = {  }),
+            modifier = Modifier.clickable( onClick = {
+                navController.navigate(Routes.SignInScreenRoute.route)
+            }),
             color = yellowActive
         )
     }

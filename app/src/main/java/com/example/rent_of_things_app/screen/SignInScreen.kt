@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
@@ -18,9 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.rent_of_things_app.domain.entity.UserEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.presentation.SignInScreenUiState
@@ -28,16 +33,15 @@ import com.example.rent_of_things_app.presentation.SignInScreenViewModel
 import com.example.rent_of_things_app.screen.ProductListListOfProducts
 import com.example.rent_of_things_app.screen.ScreenError
 import com.example.rent_of_things_app.screen.ScreenLoadind
+import com.example.rent_of_things_app.screen.navigation.Routes
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen(
-    viewModel: SignInScreenViewModel = koinViewModel()
+    viewModel: SignInScreenViewModel = koinViewModel(),
+    navController: NavHostController
 ) {
-    var textFieldEmail by remember { mutableStateOf("") }
-    var textFieldPassword by remember { mutableStateOf("") }
-
-    val state by viewModel.state.observeAsState(SignInScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(SignInScreenUiState.Initial)
     when(state){
         SignInScreenUiState.Initial    -> Unit
         SignInScreenUiState.Loading    -> ScreenLoadind()
@@ -98,13 +102,26 @@ fun SignInScreen(
                         fontSize = 25.sp,
                         color = greyText
                     )
-                    /*OutlinedTextField(
+
+                    val maxSizeTextField = 30
+
+                    var userEmailTextField by remember { mutableStateOf("") }
+                    var userEmailCorrectTextField by remember { mutableStateOf(false) }
+                    OutlinedTextField(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
                         leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
-                        value = textFieldEmail,
-                        onValueChange = { textFieldEmail = it },
+                        value = userEmailTextField,
+                        onValueChange = {
+                            if (it.length <= maxSizeTextField) userEmailTextField = it
+
+                            if (it.length > 0 && it.length <= maxSizeTextField && android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches())
+                                userEmailCorrectTextField = true
+                            else
+                                userEmailCorrectTextField = false
+                                        },
+                        isError = userEmailCorrectTextField,
                         placeholder = {
                             Text(
                                 "Email",
@@ -116,21 +133,29 @@ fun SignInScreen(
                             placeholderColor = greyText,
                             focusedBorderColor = grey,
                             unfocusedBorderColor = grey,
-                            disabledBorderColor = grey,
-                            errorBorderColor = grey,
-                            leadingIconColor = grey
+                            errorBorderColor = yellowActive,
+                            leadingIconColor = grey,
+                            errorLeadingIconColor = yellowActive
                         ),
                         shape = MaterialTheme.shapeScheme.shape30,
                         textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                     )
 
+                    var userPasswordTextField by remember { mutableStateOf("") }
+                    var userPasswordCorrectTextField by remember { mutableStateOf(false) }
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
                         leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
-                        value = textFieldPassword,
-                        onValueChange = { textFieldPassword = it },
+                        value = userPasswordTextField,
+                        onValueChange = {
+                            if (it.length <= maxSizeTextField) userPasswordTextField = it
+                            if (it.length > 0 && it.length <= maxSizeTextField) userPasswordCorrectTextField = true
+                            else userPasswordCorrectTextField = false
+                                        },
+                        isError = userPasswordCorrectTextField,
                         placeholder = {
                             Text(
                                 "Пароль",
@@ -142,22 +167,35 @@ fun SignInScreen(
                             placeholderColor = greyText,
                             focusedBorderColor = grey,
                             unfocusedBorderColor = grey,
-                            disabledBorderColor = grey,
-                            errorBorderColor = grey,
-                            leadingIconColor = grey
+                            errorBorderColor = yellowActive,
+                            leadingIconColor = grey,
+                            errorLeadingIconColor = yellowActive
                         ),
                         shape = MaterialTheme.shapeScheme.shape30,
                         textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-                    )*/
-                    //Возможно не сработает, так что пусть пока повисит в комментариях
-                    OutlinedTextFieldSign(Icons.Outlined.Email, "Email")
-                    OutlinedTextFieldSign(Icons.Outlined.Lock, "Пароль")
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    )
+
 
                     Button(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
-                        onClick = {},
+                        onClick = {
+                            viewModel.authorizationUser(
+                                UserEntity(
+                                    id = null,
+                                    email = userEmailTextField,
+                                    name = null,
+                                    middleName = null,
+                                    surname = null,
+                                    password = userPasswordTextField,
+                                    registrationDate = null,
+                                    admin = false,
+                                    socialNetworks = null
+                                )
+                            )
+                        },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = yellowActive,
                             contentColor = Color.White
@@ -172,20 +210,7 @@ fun SignInScreen(
                 }
             }
 
-            Row(
-                modifier = Modifier.padding(vertical = 20.dp)
-            ){
-                Text(
-                    text = "Нет аккаунта? ",
-                    fontSize = 20.sp,
-                    color = greyText
-                )
-                Text("Зарегистрируйтесь",
-                    fontSize = 20.sp,
-                    modifier = Modifier.clickable( onClick = {  }),
-                    color = yellowActive
-                )
-            }
+
         }
     }
 }
@@ -225,8 +250,29 @@ fun OutlinedTextFieldSign(
     )
 }
 
+@Composable
+fun SignInScreenRow(navController: NavHostController){
+    Row(
+        modifier = Modifier.padding(vertical = 20.dp)
+    ){
+        Text(
+            text = "Нет аккаунта? ",
+            fontSize = 20.sp,
+            color = greyText
+        )
+        Text("Зарегистрируйтесь",
+            fontSize = 20.sp,
+            modifier = Modifier.clickable( onClick = {
+                navController.navigate(Routes.SignUpScreenRoute.route)
+            }),
+            color = yellowActive
+        )
+    }
+}
+
 @Preview
 @Composable
 fun ScreenSignInPreview(){
-    SignInScreen()
+    val navController = rememberNavController()
+    SignInScreen(navController = navController)
 }

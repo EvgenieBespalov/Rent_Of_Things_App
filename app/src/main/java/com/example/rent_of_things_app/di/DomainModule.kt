@@ -8,6 +8,7 @@ import com.example.rent_of_things_app.data.repository.ProductRepositoryImpl
 import com.example.rent_of_things_app.data.repository.UserRepositoryImpl
 import com.example.rent_of_things_app.domain.repository.ProductRepository
 import com.example.rent_of_things_app.domain.repository.UserRepository
+import com.example.rent_of_things_app.domain.usecase.AuthorizationUserUseCase
 import com.example.rent_of_things_app.domain.usecase.GetAllProductUseCase
 import com.example.rent_of_things_app.domain.usecase.GetIdProductUseCase
 import com.example.rent_of_things_app.domain.usecase.RegistrationUserUseCase
@@ -43,4 +44,5 @@ fun provideDomainModule(): Module =
         factory { GetAllProductUseCase(repository = get()) }
         factory { GetIdProductUseCase(repository = get()) }
         factory { RegistrationUserUseCase(repository = get()) }
+        factory { AuthorizationUserUseCase(repository = get()) }
     }
