@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.rent_of_things_app.domain.entity.UserEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.presentation.SignInScreenUiState
@@ -40,7 +41,7 @@ fun SignInScreen(
     viewModel: SignInScreenViewModel = koinViewModel(),
     navController: NavHostController
 ) {
-    val state by viewModel.state.observeAsState(SignInScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(SignInScreenUiState.Initial)
     when(state){
         SignInScreenUiState.Initial    -> Unit
         SignInScreenUiState.Loading    -> ScreenLoadind()
@@ -180,7 +181,21 @@ fun SignInScreen(
                         modifier = Modifier
                             .padding(bottom = 20.dp)
                             .size(300.dp, 55.dp),
-                        onClick = {},
+                        onClick = {
+                            viewModel.authorizationUser(
+                                UserEntity(
+                                    id = null,
+                                    email = userEmailTextField,
+                                    name = null,
+                                    middleName = null,
+                                    surname = null,
+                                    password = userPasswordTextField,
+                                    registrationDate = null,
+                                    admin = false,
+                                    socialNetworks = null
+                                )
+                            )
+                        },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = yellowActive,
                             contentColor = Color.White
