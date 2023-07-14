@@ -2,6 +2,7 @@ package com.example.rent_of_things_app.screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -22,13 +22,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.rent_of_things_app.R
 import com.example.rent_of_things_app.domain.entity.ProductEntity
+import com.example.rent_of_things_app.domain.entity.ProductTypeEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
+import com.example.rent_of_things_app.presentation.ProductTypesUiSate
 import com.example.rent_of_things_app.screen.navigation.Routes
 import com.example.rent_of_things_app.screen.offer_list_screens.*
 import com.example.rent_of_things_app.screen.theme.*
@@ -41,55 +44,48 @@ fun ProductListScreen(
     viewModel: ProductListScreenViewModel = koinViewModel(),
     navController: NavHostController
 ){
-    val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-
-                val delta = available.y
-                val newOffset = toolbarOffsetHeightPx.value + delta
-                toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
-
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
+    val stateProductType by viewModel.stateProductType.observeAsState(ProductTypesUiSate.Initial)
 
-    Box(
+    Column(
         Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
             .background(color = Color.White),
-        contentAlignment = Alignment.TopCenter
     ) {
+        when(stateProductType){
+            ProductTypesUiSate.Initial    -> viewModel.getAllProductType()
+            ProductTypesUiSate.Loading    -> ScreenLoadind()
+            is ProductTypesUiSate.Content -> ProductListTabBar(
+                productType = (stateProductType as ProductTypesUiSate.Content).productType
+            )
+            is ProductTypesUiSate.Error   -> ScreenError(errorText = (stateProductType as ProductTypesUiSate.Error).message.orEmpty())
+        }
 
         when(state){
             ProductListScreenUiState.Initial    -> viewModel.getAllProduct()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
-            is ProductListScreenUiState.Content -> ProductListListOfProducts(
+            is ProductListScreenUiState.Content -> ProductListMainScreen(
                 productList = (state as ProductListScreenUiState.Content).productList,
                 navController = navController
             )
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
         }
 
-        Box(
-            modifier = Modifier
-                .height(toolbarHeight)
-                .offset { IntOffset(x = 0, y = toolbarOffsetHeightPx.value.roundToInt()) },
-        ){
-            ProductListTabBar()
-        }
     }
 }
 
 @Composable
-fun ProductListListOfProducts(
+fun ProductListMainScreen(
     productList: List<ProductEntity>,
     navController: NavHostController
 ){
+//    Box(
+//        /*modifier = Modifier
+//            .height(toolbarHeight)*/
+//    ){
+//        ProductListTabBar(productType = productType)
+//    }
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
@@ -123,11 +119,12 @@ fun ProductListItemOfList(
             }
             .border(
                 width = 2.dp,
-                color = when(productItem.productAvailable){
+                color = when (productItem.productAvailable) {
                     true -> yellowActive
                     false -> grey
-                                    },
-                shape = RoundedCornerShape(shape10))
+                },
+                shape = RoundedCornerShape(shape10)
+            )
             .clickable {
                 navController.navigate(Routes.ProductCardScreenRoute.route + "/${productItem.productId}")
             },
@@ -179,20 +176,23 @@ fun ProductListItemOfList(
 }
 
 @Composable
-fun ProductListTabBar(){
+fun ProductListTabBar(productType: ProductTypeEntity){
     val pullOutPanelExtended = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Black),
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = grey
+            ),
         contentAlignment = Alignment.Center
     ){
         Column(
             modifier = Modifier.padding(paddingTabBar)
         ){
-            //SearchBarThings()
-            ProductListFilterPanel()
+            ProductListFilterPanel(productType = productType)
             IconButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -229,30 +229,58 @@ fun ProductListTabBar(){
 }
 
 @Composable
-fun ProductListFilterPanel(){
-    Box(modifier = Modifier
+fun ProductListFilterPanel(productType: ProductTypeEntity){
+    Column(modifier = Modifier
         .height(sizePullOutPanel.value)
     ){
-        //Text("gggggggg")
+        ProductListProductType(productType = productType)
     }
 }
 
-@Preview
 @Composable
-fun PullOutPanelPreview(){
-    ProductListFilterPanel()
-}
+fun ProductListProductType(
+    productType: ProductTypeEntity,
+    viewModel: ProductListScreenViewModel = koinViewModel(),
+){
+    val selectedOption = remember { mutableStateOf("")}
+    //selectedOption.value = null
 
-@Preview
-@Composable
-fun ScreenListOfRentalOffersPreview(){
-    val navController = rememberNavController()
-    //ProductListItemOfList(navController = navController, "Name", "1488", "day", true, "rent")
-}
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        userScrollEnabled = userScrollEnabled.value
+    ){
+        productType.productName.forEach {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .background(
+                            color = when(selectedOption.value){
+                                it -> yellowActive
+                                else -> grey
+                            }
+                        )
+                        .clickable {
+                            if (selectedOption.value == it){
+                                selectedOption.value = ""
+                                viewModel.getAllProduct()
+                            }
+                            else{
+                                selectedOption.value = it
+                                viewModel.getProductsByType(selectedOption.value)
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = it,
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                }
 
-@Preview
-@Composable
-fun TabBarPreview(){
-    ProductListTabBar()
+            }
+        }
+    }
 }
-

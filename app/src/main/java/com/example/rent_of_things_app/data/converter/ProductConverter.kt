@@ -29,6 +29,12 @@ class ProductConverter {
             productAvailable = when(from.status){
                 productFreeConst -> true
                 else -> false
+            },
+            timeFrame = when(from.timeFrame){
+                "day" -> "день"
+                "week" -> "неделя"
+                "hour" -> "час"
+                else -> ""
             }
         )
 }

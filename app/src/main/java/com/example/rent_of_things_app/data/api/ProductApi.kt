@@ -10,4 +10,7 @@ interface ProductApi {
 
     @GET("/renting/products/{productId}")
     suspend fun getIdProduct(@Path("productId") productId: String): ProductModel
+
+    @GET("/renting/products/product_types/{productType}")
+    suspend fun getProductsByType(@Path("productType") productType: String): List<ProductModel>
 }

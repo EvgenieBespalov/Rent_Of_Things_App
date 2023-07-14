@@ -1,6 +1,7 @@
 package com.example.rent_of_things_app.di
 
 import com.example.rent_of_things_app.data.api.ProductApi
+import com.example.rent_of_things_app.data.api.ProductTypeApi
 import com.example.rent_of_things_app.data.api.UserApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -13,7 +14,7 @@ import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 
-private const val BASE_URL = "http://158.160.107.164:8080/"
+private const val BASE_URL = "http://158.160.49.16:8080/"
 private const val CONNECT_TIMEOUT = 10L
 private const val WRITE_TIMEOUT = 10L
 private const val READ_TIMEOUT = 10L
@@ -42,6 +43,9 @@ private fun provideProductApi(retrofit: Retrofit): ProductApi =
 private fun provideUserApi(retrofit: Retrofit): UserApi =
     retrofit.create()
 
+private fun provideProductTypeApi(retrofit: Retrofit): ProductTypeApi =
+    retrofit.create()
+
 fun provideNetworkModule(): Module =
     module {
         single { provideOkHttpClient() }
@@ -49,4 +53,5 @@ fun provideNetworkModule(): Module =
         single { provideRetrofit(okHttpClient = get(), gson = get()) }
         single { provideProductApi(retrofit = get()) }
         single { provideUserApi(retrofit = get()) }
+        single { provideProductTypeApi(retrofit = get()) }
     }

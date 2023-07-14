@@ -24,5 +24,7 @@ data class ProductModel(
     @SerializedName("price")
     var price: Int,
     @SerializedName("status")
-    var status: String
+    var status: String,
+    @SerializedName("timeframe")
+    var timeFrame: String
 )
