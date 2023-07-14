@@ -2,6 +2,7 @@ package com.example.rent_of_things_app.screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
@@ -43,11 +45,10 @@ fun ProductListScreen(
 ){
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
 
-    Box(
+    Column(
         Modifier
             .fillMaxSize()
             .background(color = Color.White),
-        contentAlignment = Alignment.TopCenter
     ) {
 
         when(state){
@@ -71,6 +72,13 @@ fun ProductListMainScreen(
     productType: ProductTypeEntity,
     navController: NavHostController
 ){
+    Box(
+        /*modifier = Modifier
+            .height(toolbarHeight)*/
+    ){
+        ProductListTabBar(productType = productType)
+    }
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
@@ -83,13 +91,6 @@ fun ProductListMainScreen(
                 )
             }
         }
-    }
-
-    Box(
-        modifier = Modifier
-            .height(toolbarHeight)
-    ){
-        ProductListTabBar(productType = productType)
     }
 }
 
@@ -111,11 +112,12 @@ fun ProductListItemOfList(
             }
             .border(
                 width = 2.dp,
-                color = when(productItem.productAvailable){
+                color = when (productItem.productAvailable) {
                     true -> yellowActive
                     false -> grey
-                                    },
-                shape = RoundedCornerShape(shape10))
+                },
+                shape = RoundedCornerShape(shape10)
+            )
             .clickable {
                 navController.navigate(Routes.ProductCardScreenRoute.route + "/${productItem.productId}")
             },
@@ -183,17 +185,7 @@ fun ProductListTabBar(productType: ProductTypeEntity){
         Column(
             modifier = Modifier.padding(paddingTabBar)
         ){
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                userScrollEnabled = userScrollEnabled.value
-            ) {
-                productType.productName.forEach {
-                    item{
-                        Text(text = it)
-                    }
-                }
-            }
-            //ProductListFilterPanel()
+            ProductListFilterPanel(productType = productType)
             IconButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -230,23 +222,51 @@ fun ProductListTabBar(productType: ProductTypeEntity){
 }
 
 @Composable
-fun ProductListFilterPanel(){
-    Box(modifier = Modifier
+fun ProductListFilterPanel(productType: ProductTypeEntity){
+    Column(modifier = Modifier
         .height(sizePullOutPanel.value)
     ){
-        //Text("gggggggg")
+        ProductListProductType(productType = productType)
     }
 }
 
-@Preview
 @Composable
-fun PullOutPanelPreview(){
-    ProductListFilterPanel()
-}
+fun ProductListProductType(productType: ProductTypeEntity){
+    val selectedOption = remember { mutableStateOf("")}
+    //selectedOption.value = null
 
-@Preview
-@Composable
-fun ScreenListOfRentalOffersPreview(){
-    val navController = rememberNavController()
-    //ProductListItemOfList(navController = navController, "Name", "1488", "day", true, "rent")
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        userScrollEnabled = userScrollEnabled.value
+    ){
+        productType.productName.forEach {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .background(
+                            color = when(selectedOption.value){
+                                it -> yellowActive
+                                else -> grey
+                            }
+                        )
+                        .clickable {
+                            if (selectedOption.value == it)
+                                selectedOption.value = ""
+                            else
+                                selectedOption.value = it
+                        },
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = it,
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                }
+
+            }
+        }
+    }
 }
