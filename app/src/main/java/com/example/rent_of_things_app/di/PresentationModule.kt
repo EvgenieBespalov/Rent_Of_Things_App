@@ -16,7 +16,10 @@ fun providePresentationModule(): Module =
             )
         }
         viewModel {
-            RentalOffersListScreenViewModel()
+            RentalOffersListScreenViewModel(
+                getProductByUserIDUseCase = get(),
+                loadRentalOffersListUseCase = get()
+            )
         }
         viewModel {
             ProductCreationScreenViewModel()

@@ -8,4 +8,6 @@ interface ProductRepository {
     suspend fun getIdProduct(productId: String): ProductEntity
 
     suspend fun getProductsByType(productType: String): List<ProductEntity>
+
+    suspend fun getProductByUserId(userId: String): List<ProductEntity>
 }

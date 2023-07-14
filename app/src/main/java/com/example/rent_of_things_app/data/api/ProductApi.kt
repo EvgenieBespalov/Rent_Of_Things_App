@@ -13,4 +13,7 @@ interface ProductApi {
 
     @GET("/renting/products/product_types/{productType}")
     suspend fun getProductsByType(@Path("productType") productType: String): List<ProductModel>
+
+    @GET("/renting/products/{userId}/all")
+    suspend fun getProductByUserId(@Path("userId") userId: String): List<ProductModel>
 }

@@ -35,28 +35,38 @@ fun RentalOffersListScreen(
     viewModel: RentalOffersListScreenViewModel = koinViewModel(),
     navController: NavHostController
 ){
-    val state by viewModel.state.observeAsState(RentalOffersListScreenUiState.Content("ii"))
+    val state by viewModel.state.observeAsState(RentalOffersListScreenUiState.Initial)
 
-    Box(
+    Column(
         Modifier
             .fillMaxSize()
             .background(color = Color.White),
-        contentAlignment = Alignment.TopCenter
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(){
-            RentalOffersListButtonAddOffer(navController =  navController)
-            when(state){
-                RentalOffersListScreenUiState.Initial    -> viewModel.getRentalOffersList()
-                RentalOffersListScreenUiState.Loading    -> ScreenLoadind()
-                is RentalOffersListScreenUiState.Content -> RentalOffersListListOffers(navController =  navController)
-                is RentalOffersListScreenUiState.Error   -> ScreenError(errorText = (state as RentalOffersListScreenUiState.Error).message.orEmpty())
+        when(state){
+            RentalOffersListScreenUiState.Initial    -> viewModel.getRentalOffersList()
+            RentalOffersListScreenUiState.Loading    -> ScreenLoadind()
+            is RentalOffersListScreenUiState.Content -> {
+                when((state as RentalOffersListScreenUiState.Content).userId){
+                    null -> Unit
+                    else -> RentalOffersListButtonAddOffer(navController =  navController)
+                }
+                when((state as RentalOffersListScreenUiState.Content).listRentalOffers){
+                    null -> Unit
+                    else -> RentalOffersListMainScreen(navController =  navController)
+                }
+            }
+            is RentalOffersListScreenUiState.Error -> when((state as RentalOffersListScreenUiState.Content).userId){
+                null -> Unit
+                else -> RentalOffersListButtonAddOffer(navController =  navController)
             }
         }
     }
 }
 
 @Composable
-fun RentalOffersListListOffers(navController: NavHostController){
+fun RentalOffersListMainScreen(navController: NavHostController){
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
