@@ -10,7 +10,8 @@ fun providePresentationModule(): Module =
     module {
         viewModel {
             ProductListScreenViewModel(
-                getAllProductUseCase = get()
+                getAllProductUseCase = get(),
+                getProductTypeUseCase = get()
             )
         }
         viewModel {

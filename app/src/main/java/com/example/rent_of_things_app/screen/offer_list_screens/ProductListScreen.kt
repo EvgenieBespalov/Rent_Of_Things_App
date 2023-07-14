@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -27,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.rent_of_things_app.R
 import com.example.rent_of_things_app.domain.entity.ProductEntity
+import com.example.rent_of_things_app.domain.entity.ProductTypeEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.screen.navigation.Routes
@@ -41,26 +41,11 @@ fun ProductListScreen(
     viewModel: ProductListScreenViewModel = koinViewModel(),
     navController: NavHostController
 ){
-    val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-
-                val delta = available.y
-                val newOffset = toolbarOffsetHeightPx.value + delta
-                toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
-
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
 
     Box(
         Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
             .background(color = Color.White),
         contentAlignment = Alignment.TopCenter
     ) {
@@ -68,26 +53,22 @@ fun ProductListScreen(
         when(state){
             ProductListScreenUiState.Initial    -> viewModel.getAllProduct()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
-            is ProductListScreenUiState.Content -> ProductListListOfProducts(
+            is ProductListScreenUiState.Content -> ProductListMainScreen(
                 productList = (state as ProductListScreenUiState.Content).productList,
+                productType = (state as ProductListScreenUiState.Content).productType,
                 navController = navController
             )
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
         }
 
-        Box(
-            modifier = Modifier
-                .height(toolbarHeight)
-                .offset { IntOffset(x = 0, y = toolbarOffsetHeightPx.value.roundToInt()) },
-        ){
-            ProductListTabBar()
-        }
+
     }
 }
 
 @Composable
-fun ProductListListOfProducts(
+fun ProductListMainScreen(
     productList: List<ProductEntity>,
+    productType: ProductTypeEntity,
     navController: NavHostController
 ){
     LazyVerticalGrid(
@@ -102,6 +83,13 @@ fun ProductListListOfProducts(
                 )
             }
         }
+    }
+
+    Box(
+        modifier = Modifier
+            .height(toolbarHeight)
+    ){
+        ProductListTabBar(productType = productType)
     }
 }
 
@@ -179,20 +167,33 @@ fun ProductListItemOfList(
 }
 
 @Composable
-fun ProductListTabBar(){
+fun ProductListTabBar(productType: ProductTypeEntity){
     val pullOutPanelExtended = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Black),
+            .background(Color.White)
+            .border(
+                width = 1.dp,
+                color = grey
+            ),
         contentAlignment = Alignment.Center
     ){
         Column(
             modifier = Modifier.padding(paddingTabBar)
         ){
-            //SearchBarThings()
-            ProductListFilterPanel()
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                userScrollEnabled = userScrollEnabled.value
+            ) {
+                productType.productName.forEach {
+                    item{
+                        Text(text = it)
+                    }
+                }
+            }
+            //ProductListFilterPanel()
             IconButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -249,10 +250,3 @@ fun ScreenListOfRentalOffersPreview(){
     val navController = rememberNavController()
     //ProductListItemOfList(navController = navController, "Name", "1488", "day", true, "rent")
 }
-
-@Preview
-@Composable
-fun TabBarPreview(){
-    ProductListTabBar()
-}
-
