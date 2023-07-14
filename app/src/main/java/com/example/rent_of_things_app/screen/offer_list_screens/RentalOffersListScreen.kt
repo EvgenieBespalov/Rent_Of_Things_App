@@ -8,8 +8,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -22,11 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.rent_of_things_app.presentation.ProductListScreenUiState
-import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.presentation.RentalOffersListScreenUiState
 import com.example.rent_of_things_app.presentation.RentalOffersListScreenViewModel
-import com.example.rent_of_things_app.screen.ProductListListOfProducts
 import com.example.rent_of_things_app.screen.ScreenError
 import com.example.rent_of_things_app.screen.ScreenLoadind
 import com.example.rent_of_things_app.screen.navigation.Routes

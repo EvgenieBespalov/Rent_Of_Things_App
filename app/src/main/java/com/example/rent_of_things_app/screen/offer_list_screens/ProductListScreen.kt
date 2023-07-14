@@ -79,13 +79,6 @@ fun ProductListMainScreen(
     productList: List<ProductEntity>,
     navController: NavHostController
 ){
-//    Box(
-//        /*modifier = Modifier
-//            .height(toolbarHeight)*/
-//    ){
-//        ProductListTabBar(productType = productType)
-//    }
-
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value

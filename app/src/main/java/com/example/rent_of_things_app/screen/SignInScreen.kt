@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,11 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.rent_of_things_app.domain.entity.UserEntity
-import com.example.rent_of_things_app.presentation.ProductListScreenUiState
-import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.presentation.SignInScreenUiState
 import com.example.rent_of_things_app.presentation.SignInScreenViewModel
-import com.example.rent_of_things_app.screen.ProductListListOfProducts
 import com.example.rent_of_things_app.screen.ScreenError
 import com.example.rent_of_things_app.screen.ScreenLoadind
 import com.example.rent_of_things_app.screen.navigation.Routes
@@ -213,7 +209,7 @@ fun SignInScreen(
                                 )
                             )
                         },
-                        enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
+                        //enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = yellowActive,
                             contentColor = Color.White
