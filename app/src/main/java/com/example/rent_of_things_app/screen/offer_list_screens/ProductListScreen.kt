@@ -31,6 +31,7 @@ import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.domain.entity.ProductTypeEntity
 import com.example.rent_of_things_app.presentation.ProductListScreenUiState
 import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
+import com.example.rent_of_things_app.presentation.ProductTypesUiSate
 import com.example.rent_of_things_app.screen.navigation.Routes
 import com.example.rent_of_things_app.screen.offer_list_screens.*
 import com.example.rent_of_things_app.screen.theme.*
@@ -44,20 +45,27 @@ fun ProductListScreen(
     navController: NavHostController
 ){
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
-
+    val stateProductType by viewModel.stateProductType.observeAsState(ProductTypesUiSate.Initial)
 
     Column(
         Modifier
             .fillMaxSize()
             .background(color = Color.White),
     ) {
+        when(stateProductType){
+            ProductTypesUiSate.Initial    -> viewModel.getAllProductType()
+            ProductTypesUiSate.Loading    -> ScreenLoadind()
+            is ProductTypesUiSate.Content -> ProductListTabBar(
+                productType = (stateProductType as ProductTypesUiSate.Content).productType
+            )
+            is ProductTypesUiSate.Error   -> ScreenError(errorText = (stateProductType as ProductTypesUiSate.Error).message.orEmpty())
+        }
 
         when(state){
             ProductListScreenUiState.Initial    -> viewModel.getAllProduct()
             ProductListScreenUiState.Loading    -> ScreenLoadind()
             is ProductListScreenUiState.Content -> ProductListMainScreen(
                 productList = (state as ProductListScreenUiState.Content).productList,
-                productType = (state as ProductListScreenUiState.Content).productType,
                 navController = navController
             )
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
@@ -69,15 +77,14 @@ fun ProductListScreen(
 @Composable
 fun ProductListMainScreen(
     productList: List<ProductEntity>,
-    productType: ProductTypeEntity,
     navController: NavHostController
 ){
-    Box(
-        /*modifier = Modifier
-            .height(toolbarHeight)*/
-    ){
-        ProductListTabBar(productType = productType)
-    }
+//    Box(
+//        /*modifier = Modifier
+//            .height(toolbarHeight)*/
+//    ){
+//        ProductListTabBar(productType = productType)
+//    }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -257,7 +264,7 @@ fun ProductListProductType(
                         .clickable {
                             if (selectedOption.value == it){
                                 selectedOption.value = ""
-                                viewModel.getAllProductType()
+                                viewModel.getAllProduct()
                             }
                             else{
                                 selectedOption.value = it
