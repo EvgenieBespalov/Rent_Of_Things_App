@@ -45,6 +45,7 @@ fun ProductListScreen(
 ){
     val state by viewModel.state.observeAsState(ProductListScreenUiState.Initial)
 
+
     Column(
         Modifier
             .fillMaxSize()
@@ -61,7 +62,6 @@ fun ProductListScreen(
             )
             is ProductListScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
         }
-
 
     }
 }
@@ -231,7 +231,10 @@ fun ProductListFilterPanel(productType: ProductTypeEntity){
 }
 
 @Composable
-fun ProductListProductType(productType: ProductTypeEntity){
+fun ProductListProductType(
+    productType: ProductTypeEntity,
+    viewModel: ProductListScreenViewModel = koinViewModel(),
+){
     val selectedOption = remember { mutableStateOf("")}
     //selectedOption.value = null
 
@@ -252,10 +255,14 @@ fun ProductListProductType(productType: ProductTypeEntity){
                             }
                         )
                         .clickable {
-                            if (selectedOption.value == it)
+                            if (selectedOption.value == it){
                                 selectedOption.value = ""
-                            else
+                                viewModel.getAllProductType()
+                            }
+                            else{
                                 selectedOption.value = it
+                                viewModel.getProductsByType(selectedOption.value)
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ){
