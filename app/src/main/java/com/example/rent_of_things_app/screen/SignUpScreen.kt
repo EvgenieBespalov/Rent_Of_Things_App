@@ -282,25 +282,26 @@ fun SignUpScreen(
                 .padding(bottom = 20.dp)
                 .size(300.dp, 55.dp),
             onClick = {
-                      viewModel.registrationUser(
-                          UserEntity(
-                              id = null,
-                              email = userEmailTextField,
-                              name = userNameTextField,
-                              middleName = when(userMiddleNameTextField){
-                                  "" -> null
-                                  else -> userMiddleNameTextField
-                                                                        },
-                              surname = userSurnameTextField,
-                              password = userPasswordTextField,
-                              registrationDate = null,
-                              admin = false,
-                              socialNetworks = when(userSocialNetworksTextField){
-                                  "" -> null
-                                  else -> listOf(*userSocialNetworksTextField.split(" ").toTypedArray())
-                              }
-                          )
-                      )
+                viewModel.registrationUser(
+                    UserEntity(
+                        id = null,
+                        email = userEmailTextField,
+                        name = userNameTextField,
+                        middleName = when(userMiddleNameTextField){
+                            "" -> null
+                            else -> userMiddleNameTextField
+                        },
+                        surname = userSurnameTextField,
+                        password = userPasswordTextField,
+                        registrationDate = null,
+                        admin = false,
+                        socialNetworks = when(userSocialNetworksTextField){
+                            "" -> null
+                            else -> listOf(*userSocialNetworksTextField.split(" ").toTypedArray())
+                        }
+                    )
+                )
+                navController.navigate(Routes.ProductListScreenRoute.route)
             },
             enabled = userNameCorrectTextField && userSurnameCorrectTextField && userEmailCorrectTextField && userPasswordCorrectTextField,
             colors = ButtonDefaults.buttonColors(

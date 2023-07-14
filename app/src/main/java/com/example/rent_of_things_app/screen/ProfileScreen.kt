@@ -41,7 +41,7 @@ fun ProfileScreen(
             null -> ProfileScreenRegistrationButton(navController = navController)
             else -> (state as ProfileScreenUiState.Content).userData?.let { ProfileScreenMain(it) }
         }
-        is ProfileScreenUiState.Error   -> ScreenError(errorText = (state as ProfileScreenUiState.Error).message.orEmpty())
+        is ProfileScreenUiState.Error -> ScreenError(errorText = (state as ProfileScreenUiState.Error).message.orEmpty())
     }
 }
 

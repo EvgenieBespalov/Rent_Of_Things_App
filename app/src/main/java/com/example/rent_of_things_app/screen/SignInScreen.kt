@@ -165,8 +165,9 @@ fun SignInScreen(
                 .size(300.dp, 55.dp),
             onClick = {
                 viewModel.authorizationUser(userEmailTextField, userPasswordTextField)
+                navController.navigate(Routes.ProductListScreenRoute.route)
             },
-            //enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
+            enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = yellowActive,
                 contentColor = Color.White
