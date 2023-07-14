@@ -38,7 +38,8 @@ fun providePresentationModule(): Module =
         }
         viewModel {
             ProfileScreenViewModel(
-                loadUserProfileUseCase = get()
+                loadUserProfileUseCase = get(),
+                exitFromUserProfileUseCase = get()
             )
         }
     }

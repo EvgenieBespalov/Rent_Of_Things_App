@@ -27,7 +27,7 @@ class UserRepositoryImpl(
     override suspend fun getUserIdFromApp(): String? =
         sharedPreferences.userId
 
-    override suspend fun deleteUserFromApp(user: UserEntity) {
+    override suspend fun deleteUserFromApp() {
         sharedPreferences.clearUserId()
     }
 }

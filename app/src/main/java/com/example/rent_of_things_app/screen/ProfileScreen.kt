@@ -57,6 +57,7 @@ fun ProfileScreenMain(userData: UserEntity){
     ){
         ProfileScreenMainInfo(userData = userData)
         ProfileScreenEditButton()
+        ProfileScreenExitButton()
     }
 }
 
@@ -169,7 +170,9 @@ fun ProfileScreenEditButton(){
 }
 
 @Composable
-fun ProfileScreenExitButton(){
+fun ProfileScreenExitButton(
+    viewModel: ProfileScreenViewModel = koinViewModel()
+){
     Box(
         modifier = Modifier
             .background(color = Color.Transparent)
@@ -178,7 +181,7 @@ fun ProfileScreenExitButton(){
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = { /*TODO*/ },
+            onClick = { viewModel.exitFromProfile() },
             colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive),
             shape = RoundedCornerShape(shape10)
         ) {

@@ -8,5 +8,5 @@ interface UserRepository {
     suspend fun getUserById(userId: String): UserEntity
     suspend fun saveUserIdInApp(user: UserEntity)
     suspend fun getUserIdFromApp(): String?
-    suspend fun deleteUserFromApp(user: UserEntity)
+    suspend fun deleteUserFromApp()
 }
