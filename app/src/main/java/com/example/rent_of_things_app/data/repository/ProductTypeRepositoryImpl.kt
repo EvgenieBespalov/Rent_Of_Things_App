@@ -10,7 +10,5 @@ class ProductTypeRepositoryImpl(
     private val converter: ProductTypeConverter
 ): ProductTypeRepository {
     override suspend fun getAllProductType(): ProductTypeEntity =
-        //productTypeApi.getAllProductType().map { converter.convertProductTypeModelInProductTypeEntity(it) }
-
         converter.convertProductTypeModelInProductTypeEntity(productTypeApi.getAllProductType())
 }

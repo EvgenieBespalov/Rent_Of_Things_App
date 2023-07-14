@@ -19,7 +19,8 @@ fun NavHostContainer(
 
     NavHost(
         navController = navController,
-        startDestination = Routes.ProductListScreenRoute.route,
+        startDestination = Routes.SignInScreenRoute.route,
+        //startDestination = Routes.ProductListScreenRoute.route,
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
 

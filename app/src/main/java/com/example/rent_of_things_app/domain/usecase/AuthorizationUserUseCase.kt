@@ -7,10 +7,21 @@ class AuthorizationUserUseCase(
     private val repository: UserRepository
 ) {
     suspend operator fun invoke(userEmailTextField: String, userPasswordTextField: String): UserEntity?  {
-        var userData = repository.userAuthorization(userEmailTextField, userPasswordTextField)
+//        var userData = repository.userAuthorization(userEmailTextField, userPasswordTextField)
+//        repository.saveUserIdInApp(userData)
+//        return repository.getUserIdFromApp()?.let { repository.getUserById(it) }
+            repository.userAuthorization(userEmailTextField, userPasswordTextField)
 
-        repository.saveUserIdInApp(userData)
-
-        return repository.getUserIdFromApp()?.let { repository.getUserById(it) }
+        return UserEntity(
+            id = "from.id",
+            email = null,
+            socialNetworks = null,
+            name = null,
+            middleName = null,
+            surname = null,
+            registrationDate = null,
+            password = null,
+            admin = false
+        )
     }
 }

@@ -72,7 +72,7 @@ fun SignInScreen(
                     )
                 }
             }
-            is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+            is SignInScreenUiState.Error -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
         }
 
         Text(
@@ -85,7 +85,7 @@ fun SignInScreen(
 
         val maxSizeTextField = 30
 
-        var userEmailTextField by remember { mutableStateOf("") }
+        var userEmailTextField by remember { mutableStateOf("check@gmail.com") }
         var userEmailCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
@@ -123,7 +123,7 @@ fun SignInScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        var userPasswordTextField by remember { mutableStateOf("") }
+        var userPasswordTextField by remember { mutableStateOf("check") }
         var userPasswordCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
