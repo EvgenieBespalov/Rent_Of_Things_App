@@ -12,5 +12,6 @@ data class ProductEntity(
     var creationDate: String,
     var photo: String,
     var price: String,
-    var productAvailable: Boolean
+    var productAvailable: Boolean,
+    var timeFrame: String
 )
