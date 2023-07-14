@@ -62,4 +62,5 @@ fun provideDomainModule(): Module =
         factory { RegistrationUserUseCase(repository = get()) }
         factory { AuthorizationUserUseCase(repository = get()) }
         factory { GetProductTypeUseCase(repository = get()) }
+        factory { GetProductsByTypeUseCase(repository = get()) }
     }

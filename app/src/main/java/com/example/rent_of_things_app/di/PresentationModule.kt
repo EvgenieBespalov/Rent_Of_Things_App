@@ -11,7 +11,8 @@ fun providePresentationModule(): Module =
         viewModel {
             ProductListScreenViewModel(
                 getAllProductUseCase = get(),
-                getProductTypeUseCase = get()
+                getProductTypeUseCase = get(),
+                getProductsByTypeUseCase = get()
             )
         }
         viewModel {

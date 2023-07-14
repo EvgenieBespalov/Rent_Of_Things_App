@@ -14,7 +14,7 @@ import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 
-private const val BASE_URL = "http://158.160.107.164:8080/"
+private const val BASE_URL = "http://158.160.49.16:8080/"
 private const val CONNECT_TIMEOUT = 10L
 private const val WRITE_TIMEOUT = 10L
 private const val READ_TIMEOUT = 10L
