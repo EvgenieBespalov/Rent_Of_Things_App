@@ -1,8 +1,6 @@
 package com.example.rent_of_things_app.screen.theme
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,187 +43,155 @@ fun SignInScreen(
 //        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
 //    }
 
-    Box(
+    Column(
         modifier = Modifier
-            .background(color = Color.White)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(380.dp)
-                .graphicsLayer {
-                    clip = true
-                    shape = AbsoluteCutCornerShape(0.dp, 0.dp, 50.dp, 50.dp)
+                .padding(bottom = 80.dp, top = 80.dp),
+            text = "StudProkat",
+            fontSize = 60.sp,
+            color = Color.Black,
+        )
+
+        when(state){
+            SignInScreenUiState.Initial    -> Unit
+            SignInScreenUiState.Loading    -> ScreenLoadind()
+            is SignInScreenUiState.Content -> {
+                (state as SignInScreenUiState.Content).userData.id?.let {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 30.dp),
+                        text = it,
+                        fontSize = 25.sp,
+                        color = greyText
+                    )
                 }
-                .background(Color.Black),
-            contentAlignment = Alignment.Center
+            }
+            is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+        }
+
+        Text(
+            modifier = Modifier
+                .padding(bottom = 30.dp),
+            text = "Вход в профиль",
+            fontSize = 25.sp,
+            color = greyText
+        )
+
+        val maxSizeTextField = 30
+
+        var userEmailTextField by remember { mutableStateOf("") }
+        var userEmailCorrectTextField by remember { mutableStateOf(false) }
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(20.dp, 0.dp, 20.dp, 20.dp)
+                .height(55.dp)
+                .fillMaxWidth(),
+            leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
+            value = userEmailTextField,
+            onValueChange = {
+                if (it.length <= maxSizeTextField) userEmailTextField = it
+
+                if (it.length > 0 && it.length <= maxSizeTextField && android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches())
+                    userEmailCorrectTextField = true
+                else
+                    userEmailCorrectTextField = false
+            },
+            isError = userEmailCorrectTextField,
+            placeholder = {
+                Text(
+                    "Email",
+                    fontSize = fontTextFieldSignScreen
+                ) },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.Black,
+                backgroundColor = Color.White,
+                placeholderColor = greyText,
+                focusedBorderColor = grey,
+                unfocusedBorderColor = grey,
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
+            ),
+            shape = MaterialTheme.shapeScheme.shape30,
+            textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+
+        var userPasswordTextField by remember { mutableStateOf("") }
+        var userPasswordCorrectTextField by remember { mutableStateOf(false) }
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(20.dp, 0.dp, 20.dp, 20.dp)
+                .height(55.dp)
+                .fillMaxWidth(),
+            leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
+            value = userPasswordTextField,
+            onValueChange = {
+                if (it.length <= maxSizeTextField) userPasswordTextField = it
+                if (it.length > 0 && it.length <= maxSizeTextField) userPasswordCorrectTextField = true
+                else userPasswordCorrectTextField = false
+            },
+            isError = userPasswordCorrectTextField,
+            placeholder = {
+                Text(
+                    "Пароль",
+                    fontSize = fontTextFieldSignScreen
+                ) },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.Black,
+                backgroundColor = Color.White,
+                placeholderColor = greyText,
+                focusedBorderColor = grey,
+                unfocusedBorderColor = grey,
+                errorBorderColor = yellowActive,
+                leadingIconColor = grey,
+                errorLeadingIconColor = yellowActive
+            ),
+            shape = MaterialTheme.shapeScheme.shape30,
+            textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+        )
+
+
+        Button(
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+                .size(300.dp, 55.dp),
+            onClick = {
+                viewModel.authorizationUser(
+                    UserEntity(
+                        id = null,
+                        email = userEmailTextField,
+                        name = null,
+                        middleName = null,
+                        surname = null,
+                        password = userPasswordTextField,
+                        registrationDate = null,
+                        admin = false,
+                        socialNetworks = null
+                    )
+                )
+            },
+            //enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = yellowActive,
+                contentColor = Color.White
+            ),
+            shape = MaterialTheme.shapeScheme.shape30,
         ){
             Text(
-                modifier = Modifier
-                    .rotate(-30f)
-                    .padding(bottom = 40.dp),
-                text = "StudProkat",
-                fontSize = 60.sp,
-                color = Color.White,
+                text = "Вход",
+                fontSize = fontTextFieldSignScreen
             )
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Spacer(modifier = Modifier.height(300.dp))
-            Box(
-                modifier = Modifier
-                    .size(340.dp, 330.dp)
-                    .graphicsLayer {
-                        clip = true
-                        shape = RoundedCornerShape(15.dp)
-                    }
-                    .background(Color.White)
-                    .border(width = 1.dp, color = grey, shape = RoundedCornerShape(15.dp))
-            ){
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    when(state){
-                        SignInScreenUiState.Initial    -> Unit
-                        SignInScreenUiState.Loading    -> ScreenLoadind()
-                        is SignInScreenUiState.Content -> {
-                            (state as SignInScreenUiState.Content).userData.id?.let {
-                                Text(
-                                    modifier = Modifier
-                                        .padding(vertical = 30.dp),
-                                    text = it,
-                                    fontSize = 25.sp,
-                                    color = greyText
-                                )
-                            }
-                        }
-                        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
-                    }
-
-//                    Text(
-//                        modifier = Modifier
-//                            .padding(vertical = 30.dp),
-//                        text = "Вход в профиль",
-//                        fontSize = 25.sp,
-//                        color = greyText
-//                    )
-
-                    val maxSizeTextField = 30
-
-                    var userEmailTextField by remember { mutableStateOf("") }
-                    var userEmailCorrectTextField by remember { mutableStateOf(false) }
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .padding(bottom = 20.dp)
-                            .size(300.dp, 55.dp),
-                        leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null) },
-                        value = userEmailTextField,
-                        onValueChange = {
-                            if (it.length <= maxSizeTextField) userEmailTextField = it
-
-                            if (it.length > 0 && it.length <= maxSizeTextField && android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches())
-                                userEmailCorrectTextField = true
-                            else
-                                userEmailCorrectTextField = false
-                                        },
-                        isError = userEmailCorrectTextField,
-                        placeholder = {
-                            Text(
-                                "Email",
-                                fontSize = fontTextFieldSignScreen
-                            ) },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = Color.Black,
-                            backgroundColor = Color.White,
-                            placeholderColor = greyText,
-                            focusedBorderColor = grey,
-                            unfocusedBorderColor = grey,
-                            errorBorderColor = yellowActive,
-                            leadingIconColor = grey,
-                            errorLeadingIconColor = yellowActive
-                        ),
-                        shape = MaterialTheme.shapeScheme.shape30,
-                        textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-                    )
-
-                    var userPasswordTextField by remember { mutableStateOf("") }
-                    var userPasswordCorrectTextField by remember { mutableStateOf(false) }
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .padding(bottom = 20.dp)
-                            .size(300.dp, 55.dp),
-                        leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null) },
-                        value = userPasswordTextField,
-                        onValueChange = {
-                            if (it.length <= maxSizeTextField) userPasswordTextField = it
-                            if (it.length > 0 && it.length <= maxSizeTextField) userPasswordCorrectTextField = true
-                            else userPasswordCorrectTextField = false
-                                        },
-                        isError = userPasswordCorrectTextField,
-                        placeholder = {
-                            Text(
-                                "Пароль",
-                                fontSize = fontTextFieldSignScreen
-                            ) },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = Color.Black,
-                            backgroundColor = Color.White,
-                            placeholderColor = greyText,
-                            focusedBorderColor = grey,
-                            unfocusedBorderColor = grey,
-                            errorBorderColor = yellowActive,
-                            leadingIconColor = grey,
-                            errorLeadingIconColor = yellowActive
-                        ),
-                        shape = MaterialTheme.shapeScheme.shape30,
-                        textStyle = TextStyle(fontSize = fontTextFieldSignScreen),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                    )
-
-
-                    Button(
-                        modifier = Modifier
-                            .padding(bottom = 20.dp)
-                            .size(300.dp, 55.dp),
-                        onClick = {
-                            viewModel.authorizationUser(
-                                UserEntity(
-                                    id = null,
-                                    email = userEmailTextField,
-                                    name = null,
-                                    middleName = null,
-                                    surname = null,
-                                    password = userPasswordTextField,
-                                    registrationDate = null,
-                                    admin = false,
-                                    socialNetworks = null
-                                )
-                            )
-                        },
-                        //enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = yellowActive,
-                            contentColor = Color.White
-                        ),
-                        shape = MaterialTheme.shapeScheme.shape30,
-                    ){
-                        Text(
-                            text = "Вход",
-                            fontSize = fontTextFieldSignScreen
-                        )
-                    }
-                }
-            }
-
-            SignInScreenRow(navController = navController)
-        }
+        SignInScreenRow(navController = navController)
     }
 }
 
