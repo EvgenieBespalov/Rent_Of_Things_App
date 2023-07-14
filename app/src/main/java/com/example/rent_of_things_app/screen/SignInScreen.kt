@@ -36,12 +36,12 @@ fun SignInScreen(
     navController: NavHostController
 ) {
     val state by viewModel.state.observeAsState(SignInScreenUiState.Initial)
-//    when(state){
-//        SignInScreenUiState.Initial    -> Unit
-//        SignInScreenUiState.Loading    -> ScreenLoadind()
-//        is SignInScreenUiState.Content -> Unit
-//        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
-//    }
+    when(state){
+        SignInScreenUiState.Initial    -> Unit
+        SignInScreenUiState.Loading    -> ScreenLoadind()
+        is SignInScreenUiState.Content -> Unit
+        is SignInScreenUiState.Error   -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+    }
 
     Column(
         modifier = Modifier
@@ -58,22 +58,22 @@ fun SignInScreen(
             color = Color.Black,
         )
 
-        when(state){
-            SignInScreenUiState.Initial    -> Unit
-            SignInScreenUiState.Loading    -> ScreenLoadind()
-            is SignInScreenUiState.Content -> {
-                (state as SignInScreenUiState.Content).userData.id?.let {
-                    Text(
-                        modifier = Modifier
-                            .padding(vertical = 30.dp),
-                        text = it,
-                        fontSize = 25.sp,
-                        color = greyText
-                    )
-                }
-            }
-            is SignInScreenUiState.Error -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
-        }
+//        when(state){
+//            SignInScreenUiState.Initial    -> Unit
+//            SignInScreenUiState.Loading    -> ScreenLoadind()
+//            is SignInScreenUiState.Content -> {
+//                (state as SignInScreenUiState.Content).userData.id?.let {
+//                    Text(
+//                        modifier = Modifier
+//                            .padding(vertical = 30.dp),
+//                        text = it,
+//                        fontSize = 25.sp,
+//                        color = greyText
+//                    )
+//                }
+//            }
+//            is SignInScreenUiState.Error -> ScreenError(errorText = (state as SignInScreenUiState.Error).message.orEmpty())
+//        }
 
         Text(
             modifier = Modifier

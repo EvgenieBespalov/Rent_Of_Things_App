@@ -9,10 +9,6 @@ class AuthorizationUserUseCase(
     suspend operator fun invoke(userEmailTextField: String, userPasswordTextField: String): UserEntity?  {
         var userData = repository.userAuthorization(userEmailTextField, userPasswordTextField)
         repository.saveUserIdInApp(userData)
-
-
-
-        //return repository.getUserById("386168e7-07b5-460f-af5f-562ea6d24e6e")
         return repository.getUserIdFromApp()?.let { repository.getUserById(it) }
     }
 }

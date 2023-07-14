@@ -17,8 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rent_of_things_app.presentation.ProductCreationScreenUiState
 import com.example.rent_of_things_app.presentation.ProductCreationScreenViewModel
-import com.example.rent_of_things_app.presentation.ProductListScreenUiState
-import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
+import com.example.rent_of_things_app.presentation.product_list_screen.ProductListScreenUiState
 import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
 

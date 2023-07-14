@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,8 +20,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.ProductCardScreenUiState
 import com.example.rent_of_things_app.presentation.ProductCardScreenViewModel
-import com.example.rent_of_things_app.presentation.ProductListScreenUiState
-import com.example.rent_of_things_app.presentation.ProductListScreenViewModel
 import com.example.rent_of_things_app.screen.theme.*
 import org.koin.androidx.compose.koinViewModel
 

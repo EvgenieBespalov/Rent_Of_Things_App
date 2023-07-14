@@ -1,11 +1,9 @@
-package com.example.rent_of_things_app.presentation
+package com.example.rent_of_things_app.presentation.product_list_screen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rent_of_things_app.data.model.ProductTypeModel
-import com.example.rent_of_things_app.domain.entity.ProductTypeEntity
 import com.example.rent_of_things_app.domain.usecase.GetAllProductUseCase
 import com.example.rent_of_things_app.domain.usecase.GetProductTypeUseCase
 import com.example.rent_of_things_app.domain.usecase.GetProductsByTypeUseCase
@@ -17,10 +15,14 @@ class ProductListScreenViewModel(
     private val getProductTypeUseCase: GetProductTypeUseCase,
     private val getProductsByTypeUseCase: GetProductsByTypeUseCase
 ): ViewModel(){
-    private val _state: MutableLiveData<ProductListScreenUiState> = MutableLiveData(ProductListScreenUiState.Initial)
+    private val _state: MutableLiveData<ProductListScreenUiState> = MutableLiveData(
+        ProductListScreenUiState.Initial
+    )
     val state: LiveData<ProductListScreenUiState> = _state
 
-    private val _stateProductType: MutableLiveData<ProductTypesUiSate> = MutableLiveData(ProductTypesUiSate.Initial)
+    private val _stateProductType: MutableLiveData<ProductTypesUiSate> = MutableLiveData(
+        ProductTypesUiSate.Initial
+    )
     val stateProductType: LiveData<ProductTypesUiSate> = _stateProductType
 
     fun initial() {
