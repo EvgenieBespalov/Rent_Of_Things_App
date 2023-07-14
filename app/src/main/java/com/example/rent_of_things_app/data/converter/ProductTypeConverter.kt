@@ -4,8 +4,8 @@ import com.example.rent_of_things_app.data.model.ProductTypeModel
 import com.example.rent_of_things_app.domain.entity.ProductTypeEntity
 
 class ProductTypeConverter {
-    fun convertProductTypeModelInProductTypeEntity(from: ProductTypeModel): ProductTypeEntity =
+    fun convertProductTypeModelInProductTypeEntity(from: List<String>): ProductTypeEntity =
         ProductTypeEntity(
-            productName = from.productName
+            productName = from
         )
 }

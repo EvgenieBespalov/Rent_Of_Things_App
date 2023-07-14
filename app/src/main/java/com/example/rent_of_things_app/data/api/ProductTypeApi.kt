@@ -5,5 +5,6 @@ import retrofit2.http.GET
 
 interface ProductTypeApi {
     @GET("/renting/products/product_types")
-    suspend fun getAllProductType(): ProductTypeModel
+    suspend fun getAllProductType(): List<String>
+            //List<ProductTypeModel>
 }

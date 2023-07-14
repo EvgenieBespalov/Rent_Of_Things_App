@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductTypeModel(
     @SerializedName("product_type")
-    val productName: List<String>
+    val productName: String
 )
