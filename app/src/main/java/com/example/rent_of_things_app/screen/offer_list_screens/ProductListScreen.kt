@@ -151,7 +151,7 @@ fun ProductListItemOfList(
                 }
             )
             Text(
-                text = "${productItem.price} руб./${productItem.price}",
+                text = "${productItem.price} руб./${productItem.timeFrame}",
                 color = when(productItem.productAvailable){
                     true -> Color.Black
                     false -> grey

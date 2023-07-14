@@ -138,7 +138,7 @@ fun ProductCardMainInfo(
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 5.dp, 5.dp),
                 fontSize = 25.sp,
-                text = "${product.price} рублей"
+                text = "${product.price} рублей/${product.timeFrame}"
             )
             Text(
                 modifier = Modifier
