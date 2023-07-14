@@ -6,8 +6,8 @@ import com.example.rent_of_things_app.domain.repository.UserRepository
 class AuthorizationUserUseCase(
     private val repository: UserRepository
 ) {
-    suspend operator fun invoke(userAuthorizationData: UserEntity): UserEntity?  {
-        var userData = repository.userAuthorization(userAuthorizationData)
+    suspend operator fun invoke(userEmailTextField: String, userPasswordTextField: String): UserEntity?  {
+        var userData = repository.userAuthorization(userEmailTextField, userPasswordTextField)
 
         repository.saveUserIdInApp(userData)
 

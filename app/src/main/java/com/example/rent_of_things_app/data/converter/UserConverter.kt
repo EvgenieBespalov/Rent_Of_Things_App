@@ -56,9 +56,9 @@ class UserConverter {
             }
         )
 
-    fun convertUserEntityInUserAuthorizationRequestModel(from: UserEntity): UserAuthorizationRequestModel =
+    fun convertUserDataInUserAuthorizationRequestModel(userEmailTextField: String, userPasswordTextField: String): UserAuthorizationRequestModel =
         UserAuthorizationRequestModel(
-            email = from.email ?: "ch@ch.ch",
-            password = from.password ?: "ch"
+            email = userEmailTextField,
+            password = userPasswordTextField
         )
 }

@@ -22,12 +22,12 @@ class SignInScreenViewModel(
         }
     }
 
-    fun authorizationUser(authorizationUserData: UserEntity) {
+    fun authorizationUser(userEmailTextField: String, userPasswordTextField: String) {
         viewModelScope.launch {
             _state.value = SignInScreenUiState.Loading
 
             try {
-                val userData = authorizationUserUseCase(authorizationUserData)
+                val userData = authorizationUserUseCase(userEmailTextField, userPasswordTextField)
                 _state.value = userData?.let { SignInScreenUiState.Content(it) }
             } catch (rethrow: CancellationException) {
                 throw rethrow

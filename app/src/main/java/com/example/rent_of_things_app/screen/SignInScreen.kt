@@ -164,19 +164,7 @@ fun SignInScreen(
                 .padding(bottom = 20.dp)
                 .size(300.dp, 55.dp),
             onClick = {
-                viewModel.authorizationUser(
-                    UserEntity(
-                        id = null,
-                        email = userEmailTextField,
-                        name = null,
-                        middleName = null,
-                        surname = null,
-                        password = userPasswordTextField,
-                        registrationDate = null,
-                        admin = false,
-                        socialNetworks = null
-                    )
-                )
+                viewModel.authorizationUser(userEmailTextField, userPasswordTextField)
             },
             //enabled = userEmailCorrectTextField && userPasswordCorrectTextField,
             colors = ButtonDefaults.buttonColors(
