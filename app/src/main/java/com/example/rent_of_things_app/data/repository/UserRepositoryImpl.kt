@@ -1,15 +1,15 @@
 package com.example.rent_of_things_app.data.repository
 
-import android.content.SharedPreferences
 import com.example.rent_of_things_app.data.api.UserApi
 import com.example.rent_of_things_app.data.converter.UserConverter
+import com.example.rent_of_things_app.di.SharedPreferencesManager
 import com.example.rent_of_things_app.domain.entity.UserEntity
 import com.example.rent_of_things_app.domain.repository.UserRepository
 
 class UserRepositoryImpl(
     private val userApi: UserApi,
     private val userConverter: UserConverter,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferencesManager
 ): UserRepository {
     override suspend fun userRegistration(userRegistrationData: UserEntity): UserEntity =
         userConverter.convertUserRegistrationAnswerModelInUserEntity(userApi.userRegistration(userConverter.convertUserEntityInUserRegistrationRequestModel(userRegistrationData)))
@@ -21,14 +21,13 @@ class UserRepositoryImpl(
         userConverter.converUserModelInUserEntity(userApi.getUserById(userId))
 
     override suspend fun saveUserIdInApp(user: UserEntity) {
-        sharedPreferences.edit().apply(){
-            putString("USER_ID", user.id)
-        }
+        user.id?.let { sharedPreferences.saveUserId(it) }
     }
 
-    override suspend fun getUserIdFromApp(): String? = sharedPreferences.getString("USER_ID", "4d561e90-16eb-4040-bbc2-573054dfcb2a")
+    override suspend fun getUserIdFromApp(): String? =
+        sharedPreferences.userId
 
     override suspend fun deleteUserFromApp(user: UserEntity) {
-        sharedPreferences.edit().clear().apply()
+        sharedPreferences.clearUserId()
     }
 }

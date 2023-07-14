@@ -25,7 +25,7 @@ private fun provideProductApiRepository(
 private fun provideUserApiRepository(
     userApi: UserApi,
     converter: UserConverter,
-    sharedPreferences: SharedPreferences
+    sharedPreferences: SharedPreferencesManager
 ): UserRepository = UserRepositoryImpl(userApi, converter, sharedPreferences)
 
 private fun provideProductTypeRepositoryImpl(
