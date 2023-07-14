@@ -1,7 +1,7 @@
 package com.example.rent_of_things_app.di
 
 import com.example.rent_of_things_app.presentation.*
-import com.example.rent_of_things_app.screen.ProfileScreen
+import com.example.rent_of_things_app.presentation.product_list_screen.ProductListScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -37,6 +37,8 @@ fun providePresentationModule(): Module =
             )
         }
         viewModel {
-            ProfileScreenViewModel()
+            ProfileScreenViewModel(
+                loadUserProfileUseCase = get()
+            )
         }
     }

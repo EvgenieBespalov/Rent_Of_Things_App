@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rent_of_things_app.domain.usecase.LoadUserProfileUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
-class ProfileScreenViewModel(): ViewModel(){
+class ProfileScreenViewModel(
+    private val loadUserProfileUseCase: LoadUserProfileUseCase
+): ViewModel(){
     private val _state: MutableLiveData<ProfileScreenUiState> = MutableLiveData(ProfileScreenUiState.Initial)
     val state: LiveData<ProfileScreenUiState> = _state
 
@@ -22,7 +25,8 @@ class ProfileScreenViewModel(): ViewModel(){
             _state.value = ProfileScreenUiState.Loading
 
             try {
-                _state.value = ProfileScreenUiState.Content("it")
+                val userData = loadUserProfileUseCase()
+                _state.value = ProfileScreenUiState.Content(userData)
             } catch (rethrow: CancellationException) {
                 throw rethrow
             } catch (ex: Exception) {
