@@ -10,4 +10,6 @@ interface ProductRepository {
     suspend fun getProductsByType(productType: String): List<ProductEntity>
 
     suspend fun getProductByUserId(userId: String): List<ProductEntity>
+
+    suspend fun createProduct(productData: ProductEntity): ProductEntity
 }

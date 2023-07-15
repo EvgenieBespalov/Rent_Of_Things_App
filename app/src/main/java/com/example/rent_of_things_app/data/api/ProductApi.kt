@@ -1,7 +1,11 @@
 package com.example.rent_of_things_app.data.api
 
-import com.example.rent_of_things_app.data.model.ProductModel
+import com.example.rent_of_things_app.data.model.product.ProductAnswerModel
+import com.example.rent_of_things_app.data.model.product.ProductModel
+import com.example.rent_of_things_app.data.model.product.ProductRequestModel
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ProductApi {
@@ -16,4 +20,7 @@ interface ProductApi {
 
     @GET("/renting/products/{userId}/all")
     suspend fun getProductByUserId(@Path("userId") userId: String): List<ProductModel>
+
+    @POST("/renting/products")
+    suspend fun createProduct(@Body productRequestModel: ProductRequestModel): ProductAnswerModel
 }

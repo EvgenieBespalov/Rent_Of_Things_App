@@ -1,8 +1,9 @@
-package com.example.rent_of_things_app.data.model
+package com.example.rent_of_things_app.data.model.product
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
-data class ProductModel(
+data class ProductAnswerModel(
     @SerializedName("id")
     var productId: String,
     @SerializedName("user_id")
@@ -18,13 +19,11 @@ data class ProductModel(
     @SerializedName("address")
     var address: String,
     @SerializedName("creation_date")
-    var creationDate: String,
+    var creationDate: Date,
     @SerializedName("photo")
     var photo: String,
     @SerializedName("price")
-    var price: Int,
-    @SerializedName("status")
-    var status: String,
+    var price: String,
     @SerializedName("timeframe")
     var timeFrame: String
 )

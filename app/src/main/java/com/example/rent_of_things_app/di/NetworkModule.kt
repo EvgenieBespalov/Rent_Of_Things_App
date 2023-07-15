@@ -1,13 +1,19 @@
 package com.example.rent_of_things_app.di
 
+import android.app.Application
+import android.content.Context
 import android.service.controls.ControlsProviderService.TAG
 import android.util.Log
+import android.webkit.CookieManager
+import com.example.rent_of_things_app.MainActivity
+import com.example.rent_of_things_app.MyApplication
 import com.example.rent_of_things_app.data.api.ProductApi
 import com.example.rent_of_things_app.data.api.ProductTypeApi
 import com.example.rent_of_things_app.data.api.UserApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.*
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,12 +28,14 @@ private const val CONNECT_TIMEOUT = 10L
 private const val WRITE_TIMEOUT = 10L
 private const val READ_TIMEOUT = 10L
 
-private fun provideOkHttpClient(): OkHttpClient =
+private fun provideOkHttpClient(
+    sharedPreferences: SharedPreferencesManager
+): OkHttpClient =
     OkHttpClient().newBuilder()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-        .addInterceptor(ReceivedCookiesInterceptor())
+        .addInterceptor(ReceivedCookiesInterceptor(sharedPreferences))
         .build()
 
 
@@ -36,18 +44,25 @@ private fun provideGson(): Gson =
     GsonBuilder()
         .create()
 
-class ReceivedCookiesInterceptor : Interceptor {
+class ReceivedCookiesInterceptor(
+    private val sharedPreferences: SharedPreferencesManager
+) : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response
     {
+
+
         val request = chain.request()
         var response = chain.proceed(request)
 
-        //Log.i(TAG, "request: "+ request.toString())
-        //Log.i(TAG, "response: "+ response.toString())
+        Log.i(TAG, "request: "+ request.toString())
+        Log.i(TAG, "response: "+ response.toString())
+        Log.i(TAG, "Cookie: "+ sharedPreferences.cookie)
 
         if (response.code == 401 && request.url.toString() == BASE_URL + "renting/login"){
             val cookie = response.headers("Set-Cookie").get(0)
+
+            sharedPreferences.saveCookie(cookie)
 
             response.close()
 
@@ -57,8 +72,23 @@ class ReceivedCookiesInterceptor : Interceptor {
 
             response = chain.proceed(newRequest)
 
-            //Log.i(TAG, "request: "+ newRequest.toString())
-            //Log.i(TAG, "response: "+ response.toString())
+            Log.i(TAG, "request: "+ newRequest.toString())
+            Log.i(TAG, "response: "+ response.toString())
+
+            return response
+        }
+
+        if (response.code == 401 && request.url.toString() == BASE_URL + "renting/products"){
+            response.close()
+
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Cookie", sharedPreferences.cookie ?: "")
+                .build()
+
+            response = chain.proceed(newRequest)
+
+            Log.i(TAG, "request: "+ newRequest.toString())
+            Log.i(TAG, "response: "+ response.toString())
 
             return response
         }
@@ -85,7 +115,7 @@ private fun provideProductTypeApi(retrofit: Retrofit): ProductTypeApi =
 
 fun provideNetworkModule(): Module =
     module {
-        single { provideOkHttpClient() }
+        single { provideOkHttpClient(get()) }
         single { provideGson() }
         single { provideRetrofit(okHttpClient = get(), gson = get()) }
         single { provideProductApi(retrofit = get()) }

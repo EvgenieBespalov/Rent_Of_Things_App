@@ -14,6 +14,7 @@ import com.example.rent_of_things_app.domain.repository.ProductRepository
 import com.example.rent_of_things_app.domain.repository.ProductTypeRepository
 import com.example.rent_of_things_app.domain.repository.UserRepository
 import com.example.rent_of_things_app.domain.usecase.*
+import okhttp3.Interceptor
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -67,4 +68,5 @@ fun provideDomainModule(): Module =
         factory { ExitFromUserProfileUseCase(repository = get()) }
         factory { GetProductByUserIDUseCase(repository = get()) }
         factory { LoadRentalOffersListUseCase(repository = get()) }
+        factory { CreateProductUseCase(repository = get()) }
     }

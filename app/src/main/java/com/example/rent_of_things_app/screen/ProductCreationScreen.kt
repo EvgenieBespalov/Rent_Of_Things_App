@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.ProductCreationScreenUiState
 import com.example.rent_of_things_app.presentation.ProductCreationScreenViewModel
 import com.example.rent_of_things_app.presentation.product_list_screen.ProductListScreenUiState
@@ -26,38 +27,42 @@ fun ProductCreationScreen(
     viewModel: ProductCreationScreenViewModel = koinViewModel()
 ){
 
-    val state by viewModel.state.observeAsState(ProductCreationScreenUiState.Content("ii"))
-    when(state){
-        ProductCreationScreenUiState.Initial    -> Unit
-        ProductCreationScreenUiState.Loading    -> ScreenLoadind()
-        is ProductCreationScreenUiState.Content -> Unit
-        is ProductCreationScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
-    }
+//    val state by viewModel.state.observeAsState(ProductCreationScreenUiState.Initial)
+//    when(state){
+//        ProductCreationScreenUiState.Initial    -> Unit
+//        ProductCreationScreenUiState.Loading    -> ScreenLoadind()
+//        is ProductCreationScreenUiState.Content -> Unit
+//        is ProductCreationScreenUiState.Error   -> ScreenError(errorText = (state as ProductListScreenUiState.Error).message.orEmpty())
+//    }
 
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White),
-        contentAlignment = Alignment.BottomCenter,
-    ){
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = backgroundGray),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ProductCreationAddImageButton()
-            //ProductCreationImage()
-            ProductCreationMainInfo()
-            ProductCreationSaveButton()
+            .background(color = backgroundGray),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val state by viewModel.state.observeAsState(ProductCreationScreenUiState.Initial)
+        when(state){
+            ProductCreationScreenUiState.Initial    -> Unit
+            ProductCreationScreenUiState.Loading    -> ScreenLoadind()
+            is ProductCreationScreenUiState.Content -> {
+                Text(text = (state as ProductCreationScreenUiState.Content).productData.toString())
+            }
+            is ProductCreationScreenUiState.Error   -> ScreenError(errorText = (state as ProductCreationScreenUiState.Error).message.orEmpty())
         }
 
+
+
+        ProductCreationAddImageButton()
+        //ProductCreationImage()
+        ProductCreationMainInfo()
+        ProductCreationSaveButton()
     }
 }
 
 @Composable
-fun ProductCreationSaveButton(){
+fun ProductCreationSaveButton(viewModel: ProductCreationScreenViewModel = koinViewModel()){
     Box(
         modifier = Modifier
             .background(color = Color.Transparent)
@@ -66,7 +71,24 @@ fun ProductCreationSaveButton(){
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.createProduct(
+                    ProductEntity(
+                        productId = "String",
+                        userId = null,
+                        adType = "RENT",
+                        productForRent = true,
+                        productName = "Освободите...",
+                        productType = "Toys",
+                        productDescription = "Ideally",
+                        address = "ул. Пирогова 18",
+                        creationDate = "String",
+                        photo = "https://sun9-71.userapi.com/YQ7nGK_Q5xmY_E-1G49yA8Z3dCJA4u54XQ3ciA/NzAdeW8sYHg.jpg",
+                        price = "282",
+                        productAvailable = true,
+                        timeFrame = "day"
+                    ))
+            },
             colors = ButtonDefaults.buttonColors(backgroundColor = yellowActive),
             shape = RoundedCornerShape(shape10)
         ) {
@@ -144,12 +166,6 @@ fun ProductCreationInfoTextField(placeholderText: String){
         shape = MaterialTheme.shapeScheme.shape10,
         textStyle = TextStyle(fontSize = 20.sp),
     )
-}
-
-@Preview
-@Composable
-fun ScreenProductCreationPreview(){
-    ProductCreationScreen()
 }
 
 @Composable

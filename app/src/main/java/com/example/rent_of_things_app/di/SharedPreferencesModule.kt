@@ -1,6 +1,5 @@
 package com.example.rent_of_things_app.di
 
-import android.app.Application
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -24,13 +23,24 @@ class SharedPreferencesManager(context: Context) {
     }
 
     val userId: String?
-        get() = sharedPreferences.getString("PHONE", null)
+        get() = sharedPreferences.getString("USERID", null)
 
     fun clearUserId() {
         sharedPreferences.edit().clear().apply()
     }
 
-    fun saveUserId(phone: String) {
-        sharedPreferences.edit().putString("PHONE", phone).apply()
+    fun saveUserId(userId: String) {
+        sharedPreferences.edit().putString("USERID", userId).apply()
+    }
+
+    val cookie: String?
+        get() = sharedPreferences.getString("COOKIE", null)
+
+    fun clearCookie() {
+        sharedPreferences.edit().clear().apply()
+    }
+
+    fun saveCookie(cookie: String) {
+        sharedPreferences.edit().putString("COOKIE", cookie).apply()
     }
 }
