@@ -3,6 +3,7 @@ package com.example.rent_of_things_app.screen.offer_list_screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import com.example.rent_of_things_app.domain.entity.ProductEntity
 import com.example.rent_of_things_app.presentation.RentalOffersListScreenUiState
 import com.example.rent_of_things_app.presentation.RentalOffersListScreenViewModel
 import com.example.rent_of_things_app.screen.ScreenError
@@ -54,7 +57,12 @@ fun RentalOffersListScreen(
                 }
                 when((state as RentalOffersListScreenUiState.Content).listRentalOffers){
                     null -> Unit
-                    else -> RentalOffersListMainScreen(navController =  navController)
+                    else -> (state as RentalOffersListScreenUiState.Content).listRentalOffers?.let {
+                        RentalOffersListMainScreen(
+                            navController =  navController,
+                            it
+                        )
+                    }
                 }
             }
             is RentalOffersListScreenUiState.Error -> when((state as RentalOffersListScreenUiState.Content).userId){
@@ -66,17 +74,21 @@ fun RentalOffersListScreen(
 }
 
 @Composable
-fun RentalOffersListMainScreen(navController: NavHostController){
+fun RentalOffersListMainScreen(
+    navController: NavHostController,
+    listOfRentalOffers: List<ProductEntity>
+){
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         userScrollEnabled = userScrollEnabled.value
     ) {
-        items(100) { index ->
-            RentalOffersItemOfList(
-                navController = navController,
-                nameThings = "Name $index",
-                price = "Price $index"
-            )
+        listOfRentalOffers.forEach {
+            item {
+                RentalOffersItemOfList(
+                    navController = navController,
+                    productItem = it
+                )
+            }
         }
     }
 }
@@ -84,10 +96,12 @@ fun RentalOffersListMainScreen(navController: NavHostController){
 @Composable
 fun RentalOffersItemOfList(
     navController: NavHostController,
-    nameThings: String,
-    price: String
+    productItem: ProductEntity
 )
 {
+    val image =
+        rememberAsyncImagePainter(productItem.photo)
+
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -96,7 +110,17 @@ fun RentalOffersItemOfList(
                 clip = true
                 shape = RoundedCornerShape(shape10)
             }
-            .border(width = 1.dp, color = grey, shape = RoundedCornerShape(shape10)),
+            .border(
+                width = 2.dp,
+                color = when (productItem.productAvailable) {
+                    true -> yellowActive
+                    false -> grey
+                },
+                shape = RoundedCornerShape(shape10)
+            )
+            .clickable {
+                navController.navigate(Routes.ProductCardScreenRoute.route + "/${productItem.productId}")
+            },
         contentAlignment = Alignment.Center,
     ){
         Column(
@@ -114,16 +138,31 @@ fun RentalOffersItemOfList(
                         clip = true
                         shape = RoundedCornerShape(shape10)
                     },
-                painter = ColorPainter(Color.White),
-                contentDescription = "Красный прямоугольник"
+                painter = image,
+                contentDescription = "Изображение товара"
             )
             Text(
-                text = nameThings,
+                text = productItem.productName,
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(5.dp),
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
             )
             Text(
-                text = price
+                text = "${productItem.price} руб./${productItem.timeFrame}",
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
+            )
+            Text(
+                text = "${productItem.adType}",
+                color = when(productItem.productAvailable){
+                    true -> Color.Black
+                    false -> grey
+                }
             )
         }
     }
@@ -151,11 +190,4 @@ fun RentalOffersListButtonAddOffer(navController: NavHostController){
             fontSize = 20.sp
         )
     }
-}
-
-@Preview
-@Composable
-fun ScreenListOfMyOffersPreview(){
-    val navController = rememberNavController()
-    RentalOffersListScreen(navController = navController)
 }
