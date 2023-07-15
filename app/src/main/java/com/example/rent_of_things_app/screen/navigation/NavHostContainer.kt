@@ -40,7 +40,7 @@ fun NavHostContainer(
             }
 
             composable(Routes.ProductCreationScreenRoute.route) {
-                ProductCreationScreen()
+                ProductCreationScreen(navController = navController)
             }
 
             composable(Routes.SignUpScreenRoute.route) {

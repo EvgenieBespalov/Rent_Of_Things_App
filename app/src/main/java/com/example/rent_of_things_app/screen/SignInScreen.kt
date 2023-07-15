@@ -85,7 +85,7 @@ fun SignInScreen(
 
         val maxSizeTextField = 30
 
-        var userEmailTextField by remember { mutableStateOf("check@gmail.com") }
+        var userEmailTextField by remember { mutableStateOf("") }
         var userEmailCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
@@ -123,7 +123,7 @@ fun SignInScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        var userPasswordTextField by remember { mutableStateOf("check") }
+        var userPasswordTextField by remember { mutableStateOf("") }
         var userPasswordCorrectTextField by remember { mutableStateOf(false) }
         OutlinedTextField(
             modifier = Modifier
