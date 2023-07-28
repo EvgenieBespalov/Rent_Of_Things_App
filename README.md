@@ -1,19 +1,12 @@
 # Rent_Of_Things_App
 
-<head>
-  <style>
-    h.centerHeaderts{
-      text-align: center
-    }
-  </style>
-</head>
-
-
-
 <div>
-  <h style=h.centerHeaderts>
+  <h style="text-align: center">
     <p>
       О чем приложение
     </p>
   </h>
+  <p>
+    
+  </p>
 </div>
