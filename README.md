@@ -2,9 +2,7 @@
 
 <div>
   <h style="text-align: center">
-    <p>
-      О чем приложение
-    </p>
+    О чем приложение
   </h>
   <p>
     
