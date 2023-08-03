@@ -24,7 +24,10 @@
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px">
 </p>
-<img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px" align="center">
+<p>
+  <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px" align="center">
+</p>
+
 [Вкладка Мои вещи Экраны]
 
 <p align="center">
