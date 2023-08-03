@@ -21,11 +21,16 @@
 * MVVM - шаблон проектирования 
 ## Описание функционала
 
-<img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px">
-[Вкладка Мои вещи Экраны]
+<p align="center">
+  <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px">
+  [Вкладка Мои вещи Экраны]
+</p>
+<p align="center">
+  <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/0ed5ad2b-d42e-48b3-abc9-93663d469aab" style="height:500px">
+  [Экран регистрации и авторизации]
+</p>
 
-<img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/0ed5ad2b-d42e-48b3-abc9-93663d469aab" style="height:500px">
-[Экран регистрации и авторизации]
+
 
 #### О чем
 ##### О чем
