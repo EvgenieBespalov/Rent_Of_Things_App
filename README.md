@@ -34,7 +34,10 @@
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/875ccbcc-3bbf-4cd2-ac28-25cd917dfdd5" style="height:500px">
 </p>
-[Вкладка Поиск вещей Экраны]
+<p align="center">
+ [Вкладка Поиск вещей Экраны]
+</p>
+
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/23695092-2bc8-4fd9-9f80-7e43adca8b53" style="height:500px">
