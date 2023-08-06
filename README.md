@@ -41,8 +41,9 @@
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/23695092-2bc8-4fd9-9f80-7e43adca8b53" style="height:500px">
+  <br>Создание объявления
 </p>
-[Создание объявления]
+
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/321835b1-66ab-40b1-be26-0e65c209f4cc" style="height:500px">
