@@ -20,24 +20,24 @@
 * Koin - для внедрения зависимостей
 * MVVM - шаблон проектирования 
 ## Описание функционала
-
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px">
+  <br>Вкладка "Мои вещи" 
 </p>
-[Вкладка Мои вещи Экраны]
+На данной скриншоте представлены варианты вывода информации о предложений аренды от пользователя приложения:
+- 1й экран - если пользователь не авторизовался, то списка объявлений и кнопки для их создания нет
+- 2й экран - если пользователь авторизовался, но еще не создал ни одного объявления
+- 3й экран - если у пользователя есть объявления
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/0ed5ad2b-d42e-48b3-abc9-93663d469aab" style="height:500px">
+  <br>Экран регистрации и авторизации
 </p>
-[Экран регистрации и авторизации]
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/875ccbcc-3bbf-4cd2-ac28-25cd917dfdd5" style="height:500px">
+  <br>Вкладка Поиск вещей Экраны
 </p>
-<p align="center">
-Вкладка Поиск вещей Экраны
-</p>
-
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/23695092-2bc8-4fd9-9f80-7e43adca8b53" style="height:500px">
@@ -47,8 +47,8 @@
 
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/321835b1-66ab-40b1-be26-0e65c209f4cc" style="height:500px">
+  <br>Экран профиля
 </p>
-[Экран профиля]
 
 
 
