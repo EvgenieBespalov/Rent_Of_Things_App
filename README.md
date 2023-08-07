@@ -18,7 +18,7 @@
 * SharedPreferences - для сохранения настроек пользователя
 * Koin - для внедрения зависимостей
 * MVVM - шаблон проектирования
-* Clean architecture 
+* Clean architecture
 ## Описание функционала
 <p align="center">
   <img src="https://github.com/EvgenieBespalov/Rent_Of_Things_App/assets/95974491/560e4604-238b-4f1f-8440-ee9ca96e9d4a" style="height:500px">
